@@ -53,8 +53,10 @@ public struct AgentData
     public float boatDistanceFactor;
     public float enemyWeight;
     public float enemyDistanceFactor;
+    //ADDED
+    public float totalEnergy;
 
-    public AgentData(int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor)
+    public AgentData(int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy)
     {
         this.steps = steps;
         this.rayRadius = rayRadius;
@@ -67,6 +69,9 @@ public struct AgentData
         this.boatDistanceFactor = boatDistanceFactor;
         this.enemyWeight = enemyWeight;
         this.enemyDistanceFactor = enemyDistanceFactor;
+        //ADDED
+        this.totalEnergy = totalEnergy;
+
     }
 }
 
@@ -112,6 +117,15 @@ public class AgentLogic : MonoBehaviour, IComparable
     private float enemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
+    //ADDED
+    [SerializeField]
+    private float totalEnergy;
+    [SerializeField]
+    private float energyThresholdPercentage = 30;
+    private float energyThreshold { get { return totalEnergy * energyThresholdPercentage/ 100; } }
+    [SerializeField]
+    private float currentEnergy;
+
 
     [Space(10)]
     [Header("Debug & Help")] 
@@ -166,6 +180,9 @@ public class AgentLogic : MonoBehaviour, IComparable
         boatDistanceFactor = parent.boatDistanceFactor;
         enemyWeight = parent.enemyWeight;
         enemyDistanceFactor = parent.enemyDistanceFactor;
+        //ADDED
+        totalEnergy = parent.totalEnergy;
+        
     }
 
     /// <summary>
@@ -239,6 +256,11 @@ public class AgentLogic : MonoBehaviour, IComparable
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             enemyDistanceFactor += Random.Range(-mutationFactor, +mutationFactor);
+        }
+        //ADDED
+        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        {
+            totalEnergy += Random.Range(-mutationFactor, +mutationFactor);
         }
     }
 
@@ -398,6 +420,22 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight,  enemyDistanceFactor);
+        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, totalEnergy); ;
+    }
+
+    private void ReduceEnergy()
+    {
+        currentEnergy -= Time.deltaTime / 10;
+    }
+
+    private bool EnoughEnergyForReproduction()
+    {
+        if (currentEnergy >= energyThreshold) return true;
+        return false;
+    }
+
+    private void CheckEnergy()
+    {
+        if (energyThreshold >= 0) Debug.Log("Death");
     }
 }
