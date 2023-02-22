@@ -69,20 +69,20 @@ public class GenerationManager : MonoBehaviour
             StartSimulation();
         }
     }
-    
+
     private void Update()
     {
-        if (_runningSimulation)
+        if (!_runningSimulation) return;
+
+        //Creates a new generation.
+        if (simulationCount >= simulationTimer)
         {
-            //Creates a new generation.
-            if (simulationCount >= simulationTimer)
-            {
-                ++generationCount;
-                MakeNewGeneration();
-                simulationCount = -Time.deltaTime;
-            } 
-            simulationCount += Time.deltaTime;
+            ++generationCount;
+            MakeNewGeneration();
+            simulationCount = -Time.deltaTime;
         }
+        simulationCount += Time.deltaTime;
+
     }
 
      
@@ -123,18 +123,18 @@ public class GenerationManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             PirateLogic pirate = obj.GetComponent<PirateLogic>();
-            if (pirate != null)
-            {
-                _activePirates.Add(pirate);
-                if (pirateParents != null)
-                {
-                    PirateLogic pirateParent = pirateParents[Random.Range(0, pirateParents.Length)];
-                    pirate.Birth(pirateParent.GetData());
-                }
+            if (pirate == null) continue;
 
-                pirate.Mutate(mutationFactor, mutationChance);
-                pirate.AwakeUp();
+            _activePirates.Add(pirate);
+            if (pirateParents != null)
+            {
+                PirateLogic pirateParent = pirateParents[Random.Range(0, pirateParents.Length)];
+                pirate.Birth(pirateParent.GetData());
             }
+
+            pirate.Mutate(mutationFactor, mutationChance);
+            pirate.AwakeUp();
+
         }
     }
 
