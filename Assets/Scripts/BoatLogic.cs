@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BoatLogic : AgentLogic
@@ -7,6 +8,7 @@ public class BoatLogic : AgentLogic
     #region Static Variables
     private static float _boxPoints = 2.0f;
     private static float _piratePoints = -100.0f;
+    public static event Action<AgentData> OnBoatReproduce;
     #endregion
     
     private void OnTriggerEnter(Collider other)
@@ -15,6 +17,7 @@ public class BoatLogic : AgentLogic
         {
             points += _boxPoints;
             Destroy(other.gameObject);
+            AddEnergy(_boxPoints);
         }
     }
     
@@ -25,6 +28,17 @@ public class BoatLogic : AgentLogic
             //This is a safe-fail mechanism. In case something goes wrong and the Boat is not destroyed after touching
             //a pirate, it also gets a massive negative number of points.
             points += _piratePoints;
+            AddEnergy(_piratePoints);
         }
+        if (other.gameObject.tag.Equals("Boat"))
+        {
+            if (CanReproduce()) Reproduce();
+        }
+    }
+
+    private void Reproduce()
+    {
+        reproductionTimer.Reset();
+        OnBoatReproduce?.Invoke(GetData());
     }
 }

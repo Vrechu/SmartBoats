@@ -55,8 +55,11 @@ public struct AgentData
     public float enemyDistanceFactor;
     //ADDED
     public float totalEnergy;
+    public uint generation;
+    public uint index;
 
-    public AgentData(int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy)
+
+    public AgentData(int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy, uint generation, uint index)
     {
         this.steps = steps;
         this.rayRadius = rayRadius;
@@ -71,7 +74,27 @@ public struct AgentData
         this.enemyDistanceFactor = enemyDistanceFactor;
         //ADDED
         this.totalEnergy = totalEnergy;
+        this.generation = generation;
+        this.index = index;
+    }
 
+    public AgentData(AgentData parent, uint index)
+    {
+        this.steps = parent.steps;
+        this.rayRadius = parent.rayRadius;
+        this.sight = parent.sight;
+        this.movingSpeed = parent.movingSpeed;
+        this.randomDirectionValue = parent.randomDirectionValue;
+        this.boxWeight = parent.boxWeight;
+        this.distanceFactor = parent.distanceFactor;
+        this.boatWeight = parent.boatWeight;
+        this.boatDistanceFactor = parent.boatDistanceFactor;
+        this.enemyWeight = parent.enemyWeight;
+        this.enemyDistanceFactor = parent.enemyDistanceFactor;
+        //ADDED
+        this.totalEnergy = parent.totalEnergy;
+        this.generation = parent.generation;
+        this.index = index;
     }
 }
 
@@ -117,14 +140,20 @@ public class AgentLogic : MonoBehaviour, IComparable
     private float enemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
-    //ADDED
+    //ADDED ------------//////////////////////////////////////////////////////////////////////////////////////
     [SerializeField]
     private float totalEnergy;
     [SerializeField]
     private float energyThresholdPercentage = 30;
-    private float energyThreshold { get { return totalEnergy * energyThresholdPercentage/ 100; } }
     [SerializeField]
     private float currentEnergy;
+    [SerializeField]
+    private uint generation;
+    [SerializeField]
+    private uint index;
+    protected CountdownTimer reproductionTimer;
+    [SerializeField]
+    private float reproductionCooldown;
 
 
     [Space(10)]
@@ -151,6 +180,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     private void Awake()
     {
         Initiate();
+        reproductionTimer = new CountdownTimer(reproductionCooldown, false);
     }
 
     /// <summary>
@@ -167,7 +197,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// Copies the genes / weights from the parent.
     /// </summary>
     /// <param name="parent"></param>
-    public void Birth(AgentData parent)
+    public void Birth(AgentData parent, uint index = 0)
     {
         steps = parent.steps;
         rayRadius = parent.rayRadius;
@@ -182,7 +212,10 @@ public class AgentLogic : MonoBehaviour, IComparable
         enemyDistanceFactor = parent.enemyDistanceFactor;
         //ADDED
         totalEnergy = parent.totalEnergy;
-        
+        currentEnergy = totalEnergy * energyThresholdPercentage / 100;
+        generation = parent.generation++;
+        this.index = index;
+        //Debug.Log(currentEnergy);
     }
 
     /// <summary>
@@ -268,7 +301,12 @@ public class AgentLogic : MonoBehaviour, IComparable
     {
         if (_isAwake)
         {
-            Act();    
+            Act();
+            ReduceEnergy();
+            if (!reproductionTimer.CountDown() && EnergyAboveThreshold())
+            {
+
+            }
         }
     }
 
@@ -420,22 +458,44 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, totalEnergy); ;
+        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, totalEnergy, generation, index);
     }
 
+
+    #region ADDED
+    //ADDED---------------------/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void ReduceEnergy()
     {
         currentEnergy -= Time.deltaTime / 10;
+        CheckEnergy();
     }
 
-    private bool EnoughEnergyForReproduction()
+    private bool EnergyAboveThreshold()
     {
-        if (currentEnergy >= energyThreshold) return true;
+        if (currentEnergy >= totalEnergy * energyThresholdPercentage / 100) return true;
         return false;
     }
 
     private void CheckEnergy()
     {
-        if (energyThreshold >= 0) Debug.Log("Death");
+        if (currentEnergy <= 0) Die();
     }
+
+    public void AddEnergy (float energy)
+    {
+        currentEnergy += energy;
+    }
+
+    private void Die()
+    {
+        Debug.Log("death");
+    }
+
+    protected bool CanReproduce()
+    {
+        if (EnergyAboveThreshold() && reproductionTimer.AtZero()) return true;
+        return false;
+    }
+
+    #endregion
 }

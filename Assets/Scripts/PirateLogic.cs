@@ -15,6 +15,7 @@ public class PirateLogic : AgentLogic
         {
             points += _boxPoints;
             Destroy(other.gameObject);
+            AddEnergy(_boxPoints);
         }
     }
 
@@ -24,6 +25,7 @@ public class PirateLogic : AgentLogic
         {
             points += _boatPoints;
             Destroy(other.gameObject);
+            AddEnergy(_boatPoints);
         }
     }
 
