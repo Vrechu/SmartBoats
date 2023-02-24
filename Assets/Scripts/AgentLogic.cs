@@ -77,22 +77,33 @@ public class AgentLogic : MonoBehaviour, IComparable
     private float enemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
+    
     //ADDED ------------//////////////////////////////////////////////////////////////////////////////////////
-    [SerializeField]
-    private float totalEnergy;
-    [SerializeField]
-    private float energyThresholdPercentage = 30;
-    [SerializeField]
-    private float currentEnergy;
     [SerializeField]
     private uint generation;
     [SerializeField]
     private uint index;
+   
+    protected CountdownTimer energyTimer;
+    [SerializeField]
+    private float totalEnergySeconds;
+    [SerializeField]
+    private float energyThresholdPercentage = 30;
+    private float energyThreshold { get { return totalEnergySeconds* energyThresholdPercentage / 100; }}
+    [SerializeField]
+    private float currentEnergySeconds;
+    
     protected CountdownTimer reproductionTimer;
     [SerializeField]
     private float reproductionCooldown;
+    private float reproductionWeight;
+    
+    protected CountdownTimer agingTimer;
+    [SerializeField]
+    private float lifespan;
     [SerializeField]
     private float age;
+
 
     [Space(10)]
     [Header("Debug & Help")] 
@@ -116,9 +127,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     #endregion
     
     private void Awake()
-    {
+    {        
         Initiate();
-        reproductionTimer = new CountdownTimer(reproductionCooldown, false);
     }
 
     /// <summary>
@@ -129,30 +139,42 @@ public class AgentLogic : MonoBehaviour, IComparable
         points = 0;
         steps = 360 / rayRadius;
         _rigidbody = GetComponent<Rigidbody>();
+        
     }
-    
+
+    private void SetTimers()
+    {
+        reproductionTimer = new CountdownTimer(reproductionCooldown);
+        agingTimer = new CountdownTimer(lifespan);
+        energyTimer = new CountdownTimer(energyThreshold);
+    }
+
     /// <summary>
     /// Copies the genes / weights from the parent.
     /// </summary>
     /// <param name="parent"></param>
     public void Birth(AgentData parent, uint index = 0)
     {
+        generation = parent.generation++;
+        this.index = index;
+
         steps = parent.steps;
         rayRadius = parent.rayRadius;
         sight = parent.sight;
         movingSpeed = parent.movingSpeed;
         randomDirectionValue = parent.randomDirectionValue;
+
         boxWeight = parent.boxWeight;
         distanceFactor = parent.distanceFactor;
         boatWeight = parent.boatWeight;
         boatDistanceFactor = parent.boatDistanceFactor;
         enemyWeight = parent.enemyWeight;
         enemyDistanceFactor = parent.enemyDistanceFactor;
-        //ADDED
-        totalEnergy = parent.totalEnergy;
-        currentEnergy = totalEnergy * energyThresholdPercentage / 100;
-        generation = parent.generation++;
-        this.index = index;
+
+        totalEnergySeconds = parent.totalEnergy;
+        currentEnergySeconds = totalEnergySeconds * energyThresholdPercentage / 100;
+
+        lifespan = parent.lifespan;
         //Debug.Log(currentEnergy);
     }
 
@@ -231,8 +253,13 @@ public class AgentLogic : MonoBehaviour, IComparable
         //ADDED
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
-            totalEnergy += Random.Range(-mutationFactor, +mutationFactor);
+            totalEnergySeconds += Random.Range(-mutationFactor, +mutationFactor);
         }
+        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        {
+            lifespan += Random.Range(-mutationFactor, +mutationFactor);
+        }
+        SetTimers();
     }
 
     private void Update()
@@ -240,12 +267,16 @@ public class AgentLogic : MonoBehaviour, IComparable
         if (_isAwake)
         {
             Act();
-            ReduceEnergy();
-            if (!reproductionTimer.CountDown() && EnergyAboveThreshold())
-            {
-
-            }
+            CountdownTimers();           
         }
+    }
+
+    private void CountdownTimers()
+    {
+        if (agingTimer.CountDown() || energyTimer.CountDown()) Die();
+        currentEnergySeconds = energyTimer.time;
+        age = lifespan - agingTimer.time;
+        reproductionTimer.CountDown();
     }
 
     /// <summary>
@@ -396,32 +427,27 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(generation, index, steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, totalEnergy, age);
+        return new AgentData(
+            generation, index,
+            steps, rayRadius, sight, movingSpeed, randomDirectionValue, 
+            boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, 
+            totalEnergySeconds, lifespan);
     }
 
 
     #region ADDED
     //ADDED---------------------/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void ReduceEnergy()
-    {
-        currentEnergy -= Time.deltaTime / 10;
-        CheckEnergy();
-    }
+    
 
     private bool EnergyAboveThreshold()
     {
-        if (currentEnergy >= totalEnergy * energyThresholdPercentage / 100) return true;
-        return false;
-    }
-
-    private void CheckEnergy()
-    {
-        if (currentEnergy <= 0) Die();
+        if (energyTimer.BelowThreshold(energyThreshold)) return false;
+        return true;
     }
 
     public void AddEnergy (float energy)
     {
-        currentEnergy += energy;
+        energyTimer.AddTime(energy);
     }
 
     private void Die()
@@ -429,7 +455,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         Debug.Log("death");
     }
 
-    protected bool CanReproduce()
+    public bool CanReproduce()
     {
         if (EnergyAboveThreshold() && reproductionTimer.AtZero()) return true;
         return false;

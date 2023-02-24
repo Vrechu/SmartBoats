@@ -26,10 +26,10 @@ public struct AgentData
     public float totalEnergy;
     public uint generation;
     public uint index;
-    public float age;
+    public float lifespan;
 
 
-    public AgentData(uint generation, uint index, int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy, float age)
+    public AgentData(uint generation, uint index, int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy, float lifespan)
     {
         this.steps = steps;
         this.rayRadius = rayRadius;
@@ -46,7 +46,7 @@ public struct AgentData
         this.totalEnergy = totalEnergy;
         this.generation = generation;
         this.index = index;
-        this.age = age;
+        this.lifespan = lifespan;
     }
 
     public AgentData(AgentData parent, uint index)
@@ -66,7 +66,7 @@ public struct AgentData
         this.totalEnergy = parent.totalEnergy;
         this.generation = parent.generation;
         this.index = index;
-        this.age = parent.age;
+        this.lifespan = parent.lifespan;
     }
 }
 
