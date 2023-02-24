@@ -129,7 +129,7 @@ public class GenerationManager : MonoBehaviour
             if (pirateParents != null)
             {
                 PirateLogic pirateParent = pirateParents[Random.Range(0, pirateParents.Length)];
-                pirate.Birth(pirateParent.GetData());
+               // pirate.Birth(pirateParent.GetData());
             }
 
             pirate.Mutate(mutationFactor, mutationChance);
@@ -138,12 +138,12 @@ public class GenerationManager : MonoBehaviour
         }
     }
 
-     /// <summary>
-     /// Generates the list of boats using the parents list. The parent list can be null and, if so, it will be ignored.
-     /// Newly created boats will go under mutation (MutationChances and MutationFactor will be applied).
-     /// /// Newly create agents will be Awaken (calling AwakeUp()).
-     /// </summary>
-     /// <param name="boatParents"></param>
+    /// <summary>
+    /// Generates the list of boats using the parents list. The parent list can be null and, if so, it will be ignored.
+    /// Newly created boats will go under mutation (MutationChances and MutationFactor will be applied).
+    /// /// Newly create agents will be Awaken (calling AwakeUp()).
+    /// </summary>
+    /// <param name="boatParents"></param>
     private void GenerateBoats(BoatLogic[] boatParents)
     {
         _activeBoats = new List<BoatLogic>();
@@ -151,18 +151,17 @@ public class GenerationManager : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             BoatLogic boat = obj.GetComponent<BoatLogic>();
-            if (boat != null)
-            {
-                _activeBoats.Add(boat);
-                if (boatParents != null)
-                {
-                    BoatLogic boatParent = boatParents[Random.Range(0, boatParents.Length)];
-                    boat.Birth(boatParent.GetData());
-                }
+            if (boat == null) continue;
 
-                boat.Mutate(mutationFactor, mutationChance);
-                boat.AwakeUp();
+            _activeBoats.Add(boat);
+            if (boatParents != null)
+            {
+                BoatLogic boatParent = boatParents[Random.Range(0, boatParents.Length)];
+               // boat.Birth(boatParent.GetData());
             }
+
+            boat.Mutate(mutationFactor, mutationChance);
+            boat.AwakeUp();
         }
     }
 
@@ -249,4 +248,6 @@ public class GenerationManager : MonoBehaviour
         _activeBoats.ForEach(boat => boat.Sleep());
         _activePirates.ForEach(pirate => pirate.Sleep());
     }
+
+    
 }

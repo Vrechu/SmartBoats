@@ -23,7 +23,7 @@ public struct AgentData
     public float enemyWeight;
     public float enemyDistanceFactor;
     //ADDED
-    public float totalEnergy;
+    public float totalEnergySeconds;
     public uint generation;
     public uint index;
     public float lifespan;
@@ -43,7 +43,7 @@ public struct AgentData
         this.enemyWeight = enemyWeight;
         this.enemyDistanceFactor = enemyDistanceFactor;
         //ADDED
-        this.totalEnergy = totalEnergy;
+        this.totalEnergySeconds = totalEnergy;
         this.generation = generation;
         this.index = index;
         this.lifespan = lifespan;
@@ -63,7 +63,7 @@ public struct AgentData
         this.enemyWeight = parent.enemyWeight;
         this.enemyDistanceFactor = parent.enemyDistanceFactor;
         //ADDED
-        this.totalEnergy = parent.totalEnergy;
+        this.totalEnergySeconds = parent.totalEnergySeconds;
         this.generation = parent.generation;
         this.index = index;
         this.lifespan = parent.lifespan;

@@ -8,10 +8,6 @@ public class GenerateAgents : MonoBehaviour
 {
     private Bounds _bounds;
 
-    [Header("Objects")]
-    [SerializeField, Tooltip("Possible objecst to be created in the area.")]
-    private GameObject[] gameObjectToBeCreated;
-
     [Space(10)]
     [Header("Variation")]
     [SerializeField]
@@ -31,9 +27,9 @@ public class GenerateAgents : MonoBehaviour
         _bounds = GetComponent<Renderer>().bounds;
     }
 
-    public KeyValuePair<uint, GameObject> CreateNewAgent()
+    public KeyValuePair<uint, GameObject> CreateNewAgent(GameObject[] pAgentObject)
     {
-        GameObject created = Instantiate(gameObjectToBeCreated[Random.Range(0, gameObjectToBeCreated.Length)], GetRandomPositionInWorldBounds(), GetRandomRotation());
+        GameObject created = Instantiate(pAgentObject[Random.Range(0, pAgentObject.Length)], GetRandomPositionInWorldBounds(), GetRandomRotation());
         created.transform.parent = transform;
         livingAgents.Add(++amountGenerated, created);
         return new KeyValuePair<uint, GameObject>(amountGenerated, created);

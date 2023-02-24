@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class NewGenerationManager : MonoBehaviour
 {
+    [Header("Objects")]
+    [SerializeField]
+    private GameObject[] boatPrefabs;
+    [SerializeField]
+    private GameObject[] PiratePrefabs;
+
     [SerializeField]
     private GenerateAgents boatGenerator;
     [SerializeField]
@@ -34,30 +40,17 @@ public class NewGenerationManager : MonoBehaviour
     {
         for (int i = 0; i < boatStartAmount; i++)
         {
-            GenerateBabyBoat(startingBoat.GetComponent<BoatLogic>().GetData());
-        }
-        for (int i = 0; i < pirateStartAmount; i++)
-        {
-            GenerateBabyPirate(startingBoat.GetComponent<BoatLogic>().GetData());
+            GenerateBabyAgent(startingBoat.GetComponent<BoatLogic>().GetData(), startingBoat.GetComponent<BoatLogic>().GetData());
         }
     }
 
-    private void GenerateBabyBoat(AgentData parentBoat)
+    private void GenerateBabyAgent(AgentData parentAgent1, AgentData parentAgent2)
     {
-        KeyValuePair<uint, GameObject> babyBoat1 = boatGenerator.CreateNewAgent();
-        AgentLogic babyBoat = babyBoat1.Value.GetComponent<AgentLogic>();
-        babyBoat.Birth(parentBoat, babyBoat1.Key);
-        babyBoat.Mutate(mutationFactor, mutationChance);
-        babyBoat.AwakeUp();
-        Debug.Log("index: "+ babyBoat.GetData().index);
-        Debug.Log("gen: " + babyBoat.GetData().generation);
-    }
-
-    private void GenerateBabyPirate(AgentData parentPirate)
-    {
-        AgentLogic babyPirate = pirateGenerator.CreateNewAgent().Value.GetComponent<AgentLogic>();
-        babyPirate.Birth(parentPirate);
-        babyPirate.Mutate(mutationFactor, mutationChance);
-        babyPirate.AwakeUp();
+        KeyValuePair<uint, GameObject> babyAgentObject = boatGenerator.CreateNewAgent(boatPrefabs);
+        AgentLogic babyAgent = babyAgentObject.Value.GetComponent<AgentLogic>();
+        if (babyAgent == null) return;
+        babyAgent.Birth(parentAgent1, parentAgent2, babyAgentObject.Key);
+        babyAgent.Mutate(mutationFactor, mutationChance);
+        babyAgent.AwakeUp();
     }
 }

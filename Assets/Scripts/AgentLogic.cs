@@ -152,29 +152,53 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <summary>
     /// Copies the genes / weights from the parent.
     /// </summary>
-    /// <param name="parent"></param>
-    public void Birth(AgentData parent, uint index = 0)
+    /// <param name="parent1"></param>
+    public void Birth(AgentData parent1, AgentData parent2, uint index = 0)
     {
-        generation = parent.generation++;
+        generation = parent1.generation++;
         this.index = index;
 
-        steps = parent.steps;
-        rayRadius = parent.rayRadius;
-        sight = parent.sight;
-        movingSpeed = parent.movingSpeed;
-        randomDirectionValue = parent.randomDirectionValue;
+        steps = parent1.steps; 
+        if (Random.Range(0, 2) > 0) steps = parent2.steps;
 
-        boxWeight = parent.boxWeight;
-        distanceFactor = parent.distanceFactor;
-        boatWeight = parent.boatWeight;
-        boatDistanceFactor = parent.boatDistanceFactor;
-        enemyWeight = parent.enemyWeight;
-        enemyDistanceFactor = parent.enemyDistanceFactor;
+        rayRadius = parent1.rayRadius;
+        if (Random.Range(0, 2) > 0) rayRadius = parent2.rayRadius;
 
-        totalEnergySeconds = parent.totalEnergy;
-        currentEnergySeconds = totalEnergySeconds * energyThresholdPercentage / 100;
+        sight = parent1.sight;
+        if (Random.Range(0, 2) > 0) sight = parent2.sight;
 
-        lifespan = parent.lifespan;
+        movingSpeed = parent1.movingSpeed;
+        if (Random.Range(0, 2) > 0) movingSpeed = parent2.movingSpeed;
+
+
+        randomDirectionValue = parent1.randomDirectionValue;
+        if (Random.Range(0, 2) > 0) randomDirectionValue = parent2.randomDirectionValue;
+
+        boxWeight = parent1.boxWeight;
+        if (Random.Range(0, 2) > 0) boxWeight = parent2.boxWeight;
+
+        distanceFactor = parent1.distanceFactor;
+        if (Random.Range(0, 2) > 0) distanceFactor = parent2.distanceFactor;
+
+        boatWeight = parent1.boatWeight;
+        if (Random.Range(0, 2) > 0) boatWeight = parent2.boatWeight;
+
+        boatDistanceFactor = parent1.boatDistanceFactor;
+        if (Random.Range(0, 2) > 0) boatDistanceFactor = parent2.boatDistanceFactor;
+
+        enemyWeight = parent1.enemyWeight;
+        if (Random.Range(0, 2) > 0) enemyWeight = parent2.enemyWeight;
+
+        enemyDistanceFactor = parent1.enemyDistanceFactor;
+        if (Random.Range(0, 2) > 0) enemyDistanceFactor = parent2.enemyDistanceFactor;
+
+
+        totalEnergySeconds = parent1.totalEnergySeconds;
+        if (Random.Range(0, 2) > 0) totalEnergySeconds = parent2.totalEnergySeconds;
+
+        lifespan = parent1.lifespan; 
+        if (Random.Range(0, 2) > 0) lifespan = parent2.lifespan;
+
         //Debug.Log(currentEnergy);
     }
 
@@ -460,6 +484,18 @@ public class AgentLogic : MonoBehaviour, IComparable
         if (EnergyAboveThreshold() && reproductionTimer.AtZero()) return true;
         return false;
     }
+
+    protected virtual void GiveReproduction(AgentLogic mate)
+    {
+        mate.ReceiveReproduction();
+        reproductionTimer.Reset();
+    }
+
+    public void ReceiveReproduction()
+    {
+        reproductionTimer.Reset();
+    }
+
 
     #endregion
 }
