@@ -76,16 +76,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 0
-  rayRadius: 16
-  sight: 30
-  movingSpeed: 5
+  generation: 0
+  index: 0
+  steps: 20
+  rayRadius: 45
+  sight: 100
+  movingSpeed: 100
   randomDirectionValue: {x: -1, y: 1}
   boxWeight: 1
   distanceFactor: 1
-  boatWeight: 0
+  boatWeight: 100
+  tempBoatWeight: 0
   boatDistanceFactor: 0
   enemyWeight: -1
+  tempEnemyWeight: 0
   enemyDistanceFactor: -1
+  totalEnergySeconds: 100
+  startingEnergySeconds: 50
+  currentEnergySeconds: 0
+  energyThresholdPercentage: 30
+  reproductionCooldown: 10
+  reproductionCountdown: 0
+  lifespan: 150
+  age: 0
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -145,6 +158,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -169,3 +183,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

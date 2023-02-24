@@ -8619,8 +8619,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f653f39942fa27459027719078b4780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameObjectToBeCreated:
-  - {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb, type: 3}
   randomRotationMinimal: {x: 0, y: -89, z: 0}
   randomRotationMaximal: {x: 0, y: 90, z: 0}
   amountGenerated: 0
@@ -12356,8 +12354,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0953473936f1b3044b04f462cf661be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boatPrefabs:
+  - {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594, type: 3}
+  piratePrefabs:
+  - {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb, type: 3}
   boatGenerator: {fileID: 1829776929}
   pirateGenerator: {fileID: 1003293718}
+  boatStartAmount: 20
+  pirateStartAmount: 0
   mutationFactor: 3.5
   mutationChance: 30
   startingBoat: {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594,
@@ -15546,8 +15550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f653f39942fa27459027719078b4780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameObjectToBeCreated:
-  - {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594, type: 3}
   randomRotationMinimal: {x: 0, y: -89, z: 0}
   randomRotationMaximal: {x: 0, y: 90, z: 0}
   amountGenerated: 0
