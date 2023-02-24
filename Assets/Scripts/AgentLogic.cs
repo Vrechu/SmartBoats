@@ -34,69 +34,6 @@ struct AgentDirection : IComparable
     }
 }
 
-/// <summary>
-/// This struct stores all genes / weights from an Agent.
-/// It is used to pass this information along to other Agents, instead of using the MonoBehavior itself.
-/// Also, it makes it easier to inspect since it is a Serializable struct.
-/// </summary>
-[Serializable]
-public struct AgentData
-{
-    public int steps;
-    public int rayRadius;
-    public float sight;
-    public float movingSpeed;
-    public Vector2 randomDirectionValue;
-    public float boxWeight;
-    public float distanceFactor;
-    public float boatWeight;
-    public float boatDistanceFactor;
-    public float enemyWeight;
-    public float enemyDistanceFactor;
-    //ADDED
-    public float totalEnergy;
-    public uint generation;
-    public uint index;
-
-
-    public AgentData(int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy, uint generation, uint index)
-    {
-        this.steps = steps;
-        this.rayRadius = rayRadius;
-        this.sight = sight;
-        this.movingSpeed = movingSpeed;
-        this.randomDirectionValue = randomDirectionValue;
-        this.boxWeight = boxWeight;
-        this.distanceFactor = distanceFactor;
-        this.boatWeight = boatWeight;
-        this.boatDistanceFactor = boatDistanceFactor;
-        this.enemyWeight = enemyWeight;
-        this.enemyDistanceFactor = enemyDistanceFactor;
-        //ADDED
-        this.totalEnergy = totalEnergy;
-        this.generation = generation;
-        this.index = index;
-    }
-
-    public AgentData(AgentData parent, uint index)
-    {
-        this.steps = parent.steps;
-        this.rayRadius = parent.rayRadius;
-        this.sight = parent.sight;
-        this.movingSpeed = parent.movingSpeed;
-        this.randomDirectionValue = parent.randomDirectionValue;
-        this.boxWeight = parent.boxWeight;
-        this.distanceFactor = parent.distanceFactor;
-        this.boatWeight = parent.boatWeight;
-        this.boatDistanceFactor = parent.boatDistanceFactor;
-        this.enemyWeight = parent.enemyWeight;
-        this.enemyDistanceFactor = parent.enemyDistanceFactor;
-        //ADDED
-        this.totalEnergy = parent.totalEnergy;
-        this.generation = parent.generation;
-        this.index = index;
-    }
-}
 
 /// <summary>
 /// Main script for the Agent behaviour.
@@ -154,7 +91,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     protected CountdownTimer reproductionTimer;
     [SerializeField]
     private float reproductionCooldown;
-
+    [SerializeField]
+    private float age;
 
     [Space(10)]
     [Header("Debug & Help")] 
@@ -458,7 +396,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, totalEnergy, generation, index);
+        return new AgentData(generation, index, steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight, enemyDistanceFactor, totalEnergy, age);
     }
 
 
