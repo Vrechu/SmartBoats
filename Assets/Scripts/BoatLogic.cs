@@ -8,9 +8,8 @@ public class BoatLogic : AgentLogic
     #region Static Variables
     private static float _boxPoints = 2.0f;
     private static float _piratePoints = -100.0f;
-    public static event Action<AgentData> OnBoatReproduce;
     #endregion
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag.Equals("Box"))
@@ -20,10 +19,10 @@ public class BoatLogic : AgentLogic
             AddEnergy(_boxPoints);
         }
     }
-    
+
     private void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag.Equals("Enemy"))
+        if (other.gameObject.tag.Equals("Enemy"))
         {
             //This is a safe-fail mechanism. In case something goes wrong and the Boat is not destroyed after touching
             //a pirate, it also gets a massive negative number of points.
@@ -32,13 +31,21 @@ public class BoatLogic : AgentLogic
         }
         if (other.gameObject.tag.Equals("Boat"))
         {
-            if (CanReproduce()) Reproduce();
+            if (!CanReproduce()) return;
+
+            AgentLogic possibleMate = other.transform.GetComponent<AgentLogic>();
+            if (possibleMate != null && possibleMate.CanReproduce()) GiveReproduction(possibleMate);
         }
     }
-
-    private void Reproduce()
+    protected override void GiveReproduction(AgentLogic mate)
     {
-        reproductionTimer.Reset();
-        OnBoatReproduce?.Invoke(GetData());
+        base.GiveReproduction(mate);
+        EventBus<BoatReproductionEvent>.Publish(new BoatReproductionEvent(GetData(), mate.GetData()));
+    }
+
+    protected override void SetReproductionWeight()
+    {
+        tempBoatWeight = 0;
+        if (CanReproduce()) tempBoatWeight = boatWeight;
     }
 }

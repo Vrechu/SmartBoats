@@ -27,17 +27,17 @@ public class EventBus<T> where T : Event
 
 
 public class BoatReproductionEvent : Event{
-    AgentData giver;
-    AgentData receiver;
-    public BoatReproductionEvent(AgentData cGiver, AgentData cReceiver) 
-    { giver = cGiver; receiver = cReceiver; }
+    public AgentData parent1;
+    public AgentData parent2;
+    public BoatReproductionEvent(AgentData cParen1, AgentData cParen2) 
+    { parent1 = cParen1; parent2 = cParen2; }
 }
 
 public class PirateReproductionEvent : Event
 {
-    AgentData giver;
-    AgentData receiver;
-    public PirateReproductionEvent(AgentData cGiver, AgentData cReceiver)
-    { giver = cGiver; receiver = cReceiver; }
+    public AgentData parent1;
+    public AgentData parent2;
+    public PirateReproductionEvent(AgentData cParent1, AgentData cParent2)
+    { parent1 = cParent1; parent2 = cParent2; }
 }
 

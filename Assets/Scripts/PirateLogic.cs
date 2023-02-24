@@ -21,7 +21,15 @@ public class PirateLogic : AgentLogic
 
     private void OnCollisionEnter(Collision other)
     {
-        if(other.gameObject.tag.Equals("Boat"))
+        if (other.gameObject.tag.Equals("Enemy"))
+        {
+            if (!CanReproduce()) return;
+
+            AgentLogic possibleMate = other.transform.GetComponent<AgentLogic>();
+            if (possibleMate != null && possibleMate.CanReproduce()) GiveReproduction(possibleMate);
+        }
+
+        if (other.gameObject.tag.Equals("Boat"))
         {
             points += _boatPoints;
             Destroy(other.gameObject);
@@ -29,4 +37,15 @@ public class PirateLogic : AgentLogic
         }
     }
 
+    protected override void GiveReproduction(AgentLogic mate)
+    {
+        base.GiveReproduction(mate);
+        EventBus<PirateReproductionEvent>.Publish(new PirateReproductionEvent(GetData(), mate.GetData()));
+    }
+
+    protected override void SetReproductionWeight()
+    {
+        tempEnemyWeight = 0;
+        if (CanReproduce()) tempEnemyWeight = enemyWeight;
+    }
 }

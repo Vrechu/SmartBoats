@@ -11,6 +11,13 @@ public struct CountdownTimer
     public bool paused { get; private set; }
     public bool clampMaxValue { get; private set; }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="cMaxCountDownTime">The starting max value of the timer.</param>
+    /// <param name="cStartingTime">The time the timer starts on.</param>
+    /// <param name="cResetOnZero">When true, the timer resets to max value on 0.</param>
+    /// <param name="cPaused">When true, the timer does not automatically start counting down until manually unpaused.</param>
+    /// <param name="cClampMax">When true, the timer cannot go over the max value when time is added.</param>
     public CountdownTimer(float cMaxCountDownTime, float cStartingTime = -1, bool cResetOnZero = false, bool cPaused = false, bool cClampMax = true) 
     {
         countDownTime = cMaxCountDownTime;

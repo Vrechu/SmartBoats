@@ -45,11 +45,16 @@ public class AgentLogic : MonoBehaviour, IComparable
 {
     private Vector3 _movingDirection;
     private Rigidbody _rigidbody;
-    
+
     [SerializeField]
     protected float points;
 
     private bool _isAwake;
+    [Header("ID")]
+    [SerializeField]
+    private uint generation;
+    [SerializeField]
+    private uint index;
 
     [Header("Genes")]
     [SerializeField, Tooltip("Steps for the area of sight.")]
@@ -70,37 +75,41 @@ public class AgentLogic : MonoBehaviour, IComparable
     [SerializeField]
     private float distanceFactor;
     [SerializeField]
-    private float boatWeight;
+    protected float boatWeight;
+    [SerializeField]
+    protected float tempBoatWeight;
     [SerializeField]
     private float boatDistanceFactor;
     [SerializeField]
-    private float enemyWeight;
+    protected float enemyWeight;
+    [SerializeField]
+    protected float tempEnemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
-    
-    //ADDED ------------//////////////////////////////////////////////////////////////////////////////////////
-    [SerializeField]
-    private uint generation;
-    [SerializeField]
-    private uint index;
-   
-    protected CountdownTimer energyTimer;
+
+    [Header("Energy")]
     [SerializeField]
     private float totalEnergySeconds;
+    protected CountdownTimer energyTimer;
     [SerializeField]
-    private float energyThresholdPercentage = 30;
-    private float energyThreshold { get { return totalEnergySeconds* energyThresholdPercentage / 100; }}
+    private float startingEnergySeconds;
     [SerializeField]
     private float currentEnergySeconds;
-    
-    protected CountdownTimer reproductionTimer;
+    [SerializeField]
+    private float energyThresholdPercentage = 30;
+    private float energyThreshold { get { return totalEnergySeconds * energyThresholdPercentage / 100; } }
+
+    [Header("Reproduction")]
     [SerializeField]
     private float reproductionCooldown;
-    private float reproductionWeight;
+    protected CountdownTimer reproductionTimer;
+    [SerializeField]
+    private float reproductionCountdown;
     
-    protected CountdownTimer agingTimer;
+    [Header("Aging")]
     [SerializeField]
     private float lifespan;
+    protected CountdownTimer agingTimer;
     [SerializeField]
     private float age;
 
@@ -146,16 +155,27 @@ public class AgentLogic : MonoBehaviour, IComparable
     {
         reproductionTimer = new CountdownTimer(reproductionCooldown);
         agingTimer = new CountdownTimer(lifespan);
-        energyTimer = new CountdownTimer(energyThreshold);
+        energyTimer = new CountdownTimer(totalEnergySeconds, startingEnergySeconds);
+    }
+
+    private void Update()
+    {
+        if (_isAwake)
+        {
+            Act();
+            CountdownTimers();
+        SetReproductionWeight();
+        }
     }
 
     /// <summary>
-    /// Copies the genes / weights from the parent.
+    /// Copies the genes / weights from the parents.
     /// </summary>
     /// <param name="parent1"></param>
     public void Birth(AgentData parent1, AgentData parent2, uint index = 0)
     {
-        generation = parent1.generation++;
+
+        generation = parent1.generation + 1;
         this.index = index;
 
         steps = parent1.steps; 
@@ -199,7 +219,6 @@ public class AgentLogic : MonoBehaviour, IComparable
         lifespan = parent1.lifespan; 
         if (Random.Range(0, 2) > 0) lifespan = parent2.lifespan;
 
-        //Debug.Log(currentEnergy);
     }
 
     /// <summary>
@@ -286,14 +305,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         SetTimers();
     }
 
-    private void Update()
-    {
-        if (_isAwake)
-        {
-            Act();
-            CountdownTimers();           
-        }
-    }
+    
 
     private void CountdownTimers()
     {
@@ -301,6 +313,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         currentEnergySeconds = energyTimer.time;
         age = lifespan - agingTimer.time;
         reproductionTimer.CountDown();
+        reproductionCountdown = reproductionTimer.time;
     }
 
     /// <summary>
@@ -389,10 +402,10 @@ public class AgentLogic : MonoBehaviour, IComparable
                     utility = distanceIndex * distanceFactor + boxWeight;
                     break;
                 case "Boat":
-                    utility = distanceIndex * boatDistanceFactor + boatWeight;
+                    utility = distanceIndex * boatDistanceFactor + tempBoatWeight;
                     break;
                 case "Enemy":
-                    utility = distanceIndex * enemyDistanceFactor + enemyWeight;
+                    utility = distanceIndex * enemyDistanceFactor + tempEnemyWeight;
                     break;
             }
         }
@@ -459,16 +472,6 @@ public class AgentLogic : MonoBehaviour, IComparable
     }
 
 
-    #region ADDED
-    //ADDED---------------------/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-
-    private bool EnergyAboveThreshold()
-    {
-        if (energyTimer.BelowThreshold(energyThreshold)) return false;
-        return true;
-    }
-
     public void AddEnergy (float energy)
     {
         energyTimer.AddTime(energy);
@@ -481,7 +484,7 @@ public class AgentLogic : MonoBehaviour, IComparable
 
     public bool CanReproduce()
     {
-        if (EnergyAboveThreshold() && reproductionTimer.AtZero()) return true;
+        if (!energyTimer.BelowThreshold(energyThreshold) && reproductionTimer.AtZero()) return true;
         return false;
     }
 
@@ -496,6 +499,6 @@ public class AgentLogic : MonoBehaviour, IComparable
         reproductionTimer.Reset();
     }
 
+    protected virtual void SetReproductionWeight() { }
 
-    #endregion
 }
