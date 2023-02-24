@@ -19,28 +19,42 @@ public class GenerateAgents : MonoBehaviour
     [SerializeField]
     private uint amountGenerated = 0;
     public Dictionary<uint, GameObject> livingAgents { get; private set; } = new Dictionary<uint, GameObject>();
-    public event Action<uint> OnlivingAgentAdded;
-    public event Action<uint> OnlivingAgentRemoved;
 
     private void Awake()
     {
         _bounds = GetComponent<Renderer>().bounds;
+        EventBus<AgentDiedEvent>.Subscribe(OnAgentDiedEvent);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<AgentDiedEvent>.UnSubscribe(OnAgentDiedEvent);
     }
 
     public KeyValuePair<uint, GameObject> CreateNewAgent(GameObject[] pAgentObject)
     {
         GameObject created = Instantiate(pAgentObject[Random.Range(0, pAgentObject.Length)], GetRandomPositionInWorldBounds(), GetRandomRotation());
         created.transform.parent = transform;
-        livingAgents.Add(++amountGenerated, created);
+        amountGenerated++;
+        livingAgents.Add(amountGenerated, created);
         return new KeyValuePair<uint, GameObject>(amountGenerated, created);
+    }
+
+    private void OnAgentDiedEvent(AgentDiedEvent agentDiedEvent)
+    {
+        if (livingAgents.ContainsKey(agentDiedEvent.index))
+        {
+            RemoveAgent(agentDiedEvent.index);
+        }
     }
 
 
     public void RemoveAgent(uint agentIndex)
     {
-        DestroyImmediate(livingAgents[agentIndex]);
+        GameObject agent = livingAgents[agentIndex];
+
         livingAgents.Remove(agentIndex);
-        OnlivingAgentRemoved?.Invoke(agentIndex);
+        Destroy(agent);
     }
 
 

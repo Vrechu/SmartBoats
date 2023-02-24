@@ -479,7 +479,7 @@ public class AgentLogic : MonoBehaviour, IComparable
 
     private void Die()
     {
-        Debug.Log("death");
+        EventBus<AgentDiedEvent>.Publish(new AgentDiedEvent(index));
     }
 
     public bool CanReproduce()

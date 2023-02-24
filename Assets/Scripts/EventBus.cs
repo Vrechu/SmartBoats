@@ -41,3 +41,9 @@ public class PirateReproductionEvent : Event
     { parent1 = cParent1; parent2 = cParent2; }
 }
 
+public class AgentDiedEvent : Event
+{
+    public uint index;
+    public AgentDiedEvent(uint cIndex) { index = cIndex; }
+}
+
