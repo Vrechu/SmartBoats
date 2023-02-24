@@ -91,12 +91,21 @@ public struct CountdownTimer
         return true;
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="pThreshold"></param>
+    /// <returns>Returns true when the time is below the given threshold.</returns>
     public bool BelowThreshold(float pThreshold)
     {
         if (time < pThreshold) return true;
         return false;
     }
 
+    /// <summary>
+    /// Adds time to the timer.
+    /// If the timer is clamped the time will not go above the max time.
+    /// </summary>
+    /// <param name="pTime">Time to add in seconds.</param>
     public void AddTime(float pTime)
     {
         time += pTime;
