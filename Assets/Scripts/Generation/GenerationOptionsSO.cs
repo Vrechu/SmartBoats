@@ -24,6 +24,4 @@ public class GenerationOptionsSO : ScriptableObject
     [Header("Parenting and Mutation")]
     [SerializeField] public uint boatOffspringAmount = 1;
     [SerializeField] public uint pirateOffspringAmount = 1;
-    [SerializeField] public float mutationFactor = 5;
-    [SerializeField] public float mutationChance = 5;
 }

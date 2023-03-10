@@ -6,6 +6,7 @@ public class NewGenerationManager : MonoBehaviour
 {
 
     [SerializeField] private GenerationOptionsSO options;
+    [SerializeField] private MutationOptionsSO mutations;
 
     [Header("Generators")]
     [SerializeField] private GenerateAgents boatGenerator;
@@ -13,8 +14,6 @@ public class NewGenerationManager : MonoBehaviour
     [SerializeField] private GenerateAgents boxGenerator;
 
     private CountdownTimer boxSpawnTimer;
-
-    
 
     private void OnEnable()
     {
@@ -43,16 +42,13 @@ public class NewGenerationManager : MonoBehaviour
 
     private void StartSimulation()
     {
-
         GenerateBabyAgent(options.startingBoat.GetComponent<BoatLogic>().GetData(), 
             options.startingBoat.GetComponent<BoatLogic>().GetData(), 
             options.boatPrefabs, boatGenerator, options.boatStartAmount);
 
-
         GenerateBabyAgent(options.startingPirate.GetComponent<PirateLogic>().GetData(), 
             options.startingPirate.GetComponent<PirateLogic>().GetData(), 
             options.piratePrefabs, pirateGenerator, options.pirateStartAmount);
-
 
         GenerateBoxes(options.boxStartAmount);
     }
@@ -67,7 +63,7 @@ public class NewGenerationManager : MonoBehaviour
             if (babyAgent == null) return;
 
             babyAgent.Birth(parentAgent1, parentAgent2, babyAgentObject.Key);
-            babyAgent.Mutate(options.mutationFactor, options.mutationChance);
+            babyAgent.Mutate(mutations);
             babyAgent.AwakeUp();
         }
     }
@@ -97,6 +93,7 @@ public class NewGenerationManager : MonoBehaviour
     private void CheckValues()
     {
         if (options == null) Debug.LogError("No options!");
+        if (mutations == null) Debug.LogError("No mutations!");
         //generators
         if (boatGenerator == null) Debug.LogError("No boat generator!");
         if (pirateGenerator == null) Debug.LogError("No pirate generator!");
@@ -119,8 +116,6 @@ public class NewGenerationManager : MonoBehaviour
         //offspring
         if (options.boatOffspringAmount < 1) Debug.LogError("Zero boat offspring!");
         if (options.pirateOffspringAmount < 1) Debug.LogError("Zero pirate offspring!");
-        if (options.mutationChance <= 0) Debug.LogError("Zero mutation chance!");
-        if (options.mutationFactor <= 0) Debug.LogError("Zero mutation factor!");
 
     }
 }

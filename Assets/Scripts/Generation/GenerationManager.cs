@@ -132,7 +132,7 @@ public class GenerationManager : MonoBehaviour
                // pirate.Birth(pirateParent.GetData());
             }
 
-            pirate.Mutate(mutationFactor, mutationChance);
+            //pirate.Mutate(mutationFactor, mutationChance);
             pirate.AwakeUp();
 
         }
@@ -160,7 +160,7 @@ public class GenerationManager : MonoBehaviour
                // boat.Birth(boatParent.GetData());
             }
 
-            boat.Mutate(mutationFactor, mutationChance);
+            //boat.Mutate(mutationFactor, mutationChance);
             boat.AwakeUp();
         }
     }
