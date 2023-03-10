@@ -666,28 +666,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0953473936f1b3044b04f462cf661be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boatPrefabs:
-  - {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594, type: 3}
-  piratePrefabs:
-  - {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb, type: 3}
-  boxPrefabs:
-  - {fileID: 5755888960359600254, guid: 296e89e62486b42ccaa7c506e58ae38a, type: 3}
+  options: {fileID: 11400000, guid: 92588768966a80340bc41b4aec4e69bf, type: 2}
   boatGenerator: {fileID: 1829776929}
   pirateGenerator: {fileID: 1003293718}
   boxGenerator: {fileID: 1204097874}
-  startingBoat: {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594,
-    type: 3}
-  startingPirate: {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb,
-    type: 3}
-  boatStartAmount: 45
-  pirateStartAmount: 10
-  boxStartAmount: 200
-  boxesPerTick: 5
-  boxSpawnrate: 1
-  boatOffspringAmount: 2
-  pirateOffspringAmount: 1
-  mutationFactor: 5
-  mutationChance: 5
 --- !u!4 &1448668717
 Transform:
   m_ObjectHideFlags: 0
