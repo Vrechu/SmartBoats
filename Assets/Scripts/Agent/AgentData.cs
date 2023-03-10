@@ -11,62 +11,79 @@ using System;
 [Serializable]
 public struct AgentData
 {
+    public uint generation;
+    public uint index;
+
+    public float lifespan;
+    public float totalEnergySeconds;
+
     public int steps;
     public int rayRadius;
     public float sight;
     public float movingSpeed;
-    public Vector2 randomDirectionValue;
+
     public float boxWeight;
-    public float distanceFactor;
+    public float boxDistanceFactor;
     public float boatWeight;
     public float boatDistanceFactor;
     public float enemyWeight;
     public float enemyDistanceFactor;
-    //ADDED
-    public float totalEnergySeconds;
-    public uint generation;
-    public uint index;
-    public float lifespan;
 
+    public float edgeWeight;
+    public Vector2 randomDirectionValue;
 
-    public AgentData(uint generation, uint index, int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor, float totalEnergy, float lifespan)
+    public AgentData(uint generation, uint index,
+        float lifespan, float totalEnergy,
+        int steps, int rayRadius, float sight, float movingSpeed,
+        float boxWeight, float boxDistanceFactor,
+        float boatWeight, float boatDistanceFactor,
+        float enemyWeight, float enemyDistanceFactor,
+        float edgeWeight, Vector2 randomDirectionValue)
     {
+        this.generation = generation;
+        this.index = index;
+
+        this.lifespan = lifespan;
+        this.totalEnergySeconds = totalEnergy;
+
         this.steps = steps;
         this.rayRadius = rayRadius;
         this.sight = sight;
         this.movingSpeed = movingSpeed;
-        this.randomDirectionValue = randomDirectionValue;
+
         this.boxWeight = boxWeight;
-        this.distanceFactor = distanceFactor;
+        this.boxDistanceFactor = boxDistanceFactor;
         this.boatWeight = boatWeight;
         this.boatDistanceFactor = boatDistanceFactor;
         this.enemyWeight = enemyWeight;
         this.enemyDistanceFactor = enemyDistanceFactor;
-        //ADDED
-        this.totalEnergySeconds = totalEnergy;
-        this.generation = generation;
-        this.index = index;
-        this.lifespan = lifespan;
+
+        this.edgeWeight = edgeWeight;
+        this.randomDirectionValue = randomDirectionValue;
     }
 
     public AgentData(AgentData parent, uint index)
     {
+        this.generation = parent.generation;
+        this.index = index;
+
+        this.lifespan = parent.lifespan;
+        this.totalEnergySeconds = parent.totalEnergySeconds;
+
         this.steps = parent.steps;
         this.rayRadius = parent.rayRadius;
         this.sight = parent.sight;
         this.movingSpeed = parent.movingSpeed;
-        this.randomDirectionValue = parent.randomDirectionValue;
+
         this.boxWeight = parent.boxWeight;
-        this.distanceFactor = parent.distanceFactor;
+        this.boxDistanceFactor = parent.boxDistanceFactor;
         this.boatWeight = parent.boatWeight;
         this.boatDistanceFactor = parent.boatDistanceFactor;
         this.enemyWeight = parent.enemyWeight;
         this.enemyDistanceFactor = parent.enemyDistanceFactor;
-        //ADDED
-        this.totalEnergySeconds = parent.totalEnergySeconds;
-        this.generation = parent.generation;
-        this.index = index;
-        this.lifespan = parent.lifespan;
+        
+        this.edgeWeight = parent.edgeWeight;
+        this.randomDirectionValue = parent.randomDirectionValue;
     }
 }
 
