@@ -4,39 +4,21 @@ using UnityEngine;
 
 public class NewGenerationManager : MonoBehaviour
 {
-    [Header("Objects")]
-    [SerializeField] private GameObject[] boatPrefabs;
-    [SerializeField] private GameObject[] piratePrefabs;
-    [SerializeField] private GameObject[] boxPrefabs;
 
-    [Header("Generation")]
+    [SerializeField] private GenerationOptionsSO options;
+
+    [Header("Generators")]
     [SerializeField] private GenerateAgents boatGenerator;
     [SerializeField] private GenerateAgents pirateGenerator;
     [SerializeField] private GenerateAgents boxGenerator;
 
-    [SerializeField] private GameObject startingBoat;
-    [SerializeField] private GameObject startingPirate;
-
-    [SerializeField] private uint boatStartAmount;
-    [SerializeField] private uint pirateStartAmount;
-
-    [Header("Boxes")]
-    [SerializeField] private uint boxStartAmount;
-    [SerializeField] private uint boxesPerTick;
-    [SerializeField] private float boxSpawnrate = 0;
     private CountdownTimer boxSpawnTimer;
 
-    [Header("Parenting and Mutation")]
-    [SerializeField] private uint boatOffspringAmount = 1;
-    [SerializeField] private uint pirateOffspringAmount = 1;
-    [SerializeField] private float mutationFactor = 5;
-    [SerializeField] private float mutationChance = 5;
-
-
+    
 
     private void OnEnable()
     {
-        boxSpawnTimer = new CountdownTimer(boxSpawnrate, boxSpawnrate, true);
+        boxSpawnTimer = new CountdownTimer(options.boxSpawnrate, options.boxSpawnrate, true);
 
         CheckValues();
     }
@@ -56,22 +38,27 @@ public class NewGenerationManager : MonoBehaviour
 
     private void Update()
     {
-        if (boxSpawnTimer.CountDown()) GenerateBoxes(boxesPerTick);
+        if (boxSpawnTimer.CountDown()) GenerateBoxes(options.boxesPerTick);
     }
 
     private void StartSimulation()
     {
 
-        GenerateBabyAgent(startingBoat.GetComponent<BoatLogic>().GetData(), startingBoat.GetComponent<BoatLogic>().GetData(), boatPrefabs, boatGenerator, boatStartAmount);
+        GenerateBabyAgent(options.startingBoat.GetComponent<BoatLogic>().GetData(), 
+            options.startingBoat.GetComponent<BoatLogic>().GetData(), 
+            options.boatPrefabs, boatGenerator, options.boatStartAmount);
 
 
-        GenerateBabyAgent(startingPirate.GetComponent<PirateLogic>().GetData(), startingPirate.GetComponent<PirateLogic>().GetData(), piratePrefabs, pirateGenerator, pirateStartAmount);
+        GenerateBabyAgent(options.startingPirate.GetComponent<PirateLogic>().GetData(), 
+            options.startingPirate.GetComponent<PirateLogic>().GetData(), 
+            options.piratePrefabs, pirateGenerator, options.pirateStartAmount);
 
 
-        GenerateBoxes(boxStartAmount);
+        GenerateBoxes(options.boxStartAmount);
     }
 
-    private void GenerateBabyAgent(AgentData parentAgent1, AgentData parentAgent2, GameObject[] prefabs, GenerateAgents generator, uint amount)
+    private void GenerateBabyAgent(AgentData parentAgent1, AgentData parentAgent2, 
+        GameObject[] prefabs, GenerateAgents generator, uint amount)
     {
         for (int i = 0; i < amount; i++)
         {
@@ -80,7 +67,7 @@ public class NewGenerationManager : MonoBehaviour
             if (babyAgent == null) return;
 
             babyAgent.Birth(parentAgent1, parentAgent2, babyAgentObject.Key);
-            babyAgent.Mutate(mutationFactor, mutationChance);
+            babyAgent.Mutate(options.mutationFactor, options.mutationChance);
             babyAgent.AwakeUp();
         }
     }
@@ -88,19 +75,19 @@ public class NewGenerationManager : MonoBehaviour
 
     private void GenerateBabyBoat(BoatReproductionEvent reproductionEvent)
     {
-        GenerateBabyAgent(reproductionEvent.parent1, reproductionEvent.parent2, boatPrefabs, boatGenerator, boatOffspringAmount);
+        GenerateBabyAgent(reproductionEvent.parent1, reproductionEvent.parent2, options.boatPrefabs, boatGenerator, options.boatOffspringAmount);
     }
 
     private void GenerateBabyPirate(PirateReproductionEvent reproductionEvent)
     {
-        GenerateBabyAgent(reproductionEvent.parent1, reproductionEvent.parent2, piratePrefabs, pirateGenerator, pirateOffspringAmount);
+        GenerateBabyAgent(reproductionEvent.parent1, reproductionEvent.parent2, options.piratePrefabs, pirateGenerator, options.pirateOffspringAmount);
     }
 
     private void GenerateBoxes(uint amount)
     {
         for (int i = 0; i < amount; i++)
         {
-            KeyValuePair<uint, GameObject> newBox = boxGenerator.CreateNewAgent(boxPrefabs);
+            KeyValuePair<uint, GameObject> newBox = boxGenerator.CreateNewAgent(options.boxPrefabs);
         }
     }
 
@@ -109,30 +96,31 @@ public class NewGenerationManager : MonoBehaviour
     /// </summary>
     private void CheckValues()
     {
+        if (options == null) Debug.LogError("No options!");
         //generators
-        if (boatGenerator == null) Debug.LogError("No boat generator");
-        if (pirateGenerator == null) Debug.LogError("No pirate generator");
-        if (boxGenerator == null) Debug.LogError("No box generator");
+        if (boatGenerator == null) Debug.LogError("No boat generator!");
+        if (pirateGenerator == null) Debug.LogError("No pirate generator!");
+        if (boxGenerator == null) Debug.LogError("No box generator!");
 
         //prefabs
-        if (startingBoat == null) Debug.LogError("No starting boat!");
-        if (startingPirate == null) Debug.LogError("No starting pirate!");
-        if (boatPrefabs.Length < 1) Debug.LogError("No boat prefabs!");
-        if (piratePrefabs.Length < 1) Debug.LogError("No pirate prefabs!");
-        if (boxPrefabs.Length < 1) Debug.LogError("No box prefabs!");
+        if (options.startingBoat == null) Debug.LogError("No starting boat!");
+        if (options.startingPirate == null) Debug.LogError("No starting pirate!");
+        if (options.boatPrefabs.Length < 1) Debug.LogError("No boat prefabs!");
+        if (options.piratePrefabs.Length < 1) Debug.LogError("No pirate prefabs!");
+        if (options.boxPrefabs.Length < 1) Debug.LogError("No box prefabs!");
 
-        if (boatStartAmount < 1) Debug.LogError("Zero starting boats!");
-        if (pirateStartAmount < 1) Debug.LogError("Zero starting pirates!");
-        if (boxStartAmount < 1) Debug.LogError("Zero starting boxes!");
+        if (options.boatStartAmount < 1) Debug.LogError("Zero starting boats!");
+        if (options.pirateStartAmount < 1) Debug.LogError("Zero starting pirates!");
+        if (options.boxStartAmount < 1) Debug.LogError("Zero starting boxes!");
 
-        if (boxesPerTick < 1) Debug.LogError("Zero boxes per tick!");
-        if (boxSpawnrate <= 0) Debug.LogError("Box Countdown = 0");
+        if (options.boxesPerTick < 1) Debug.LogError("Zero boxes per tick!");
+        if (options.boxSpawnrate <= 0) Debug.LogError("Box Countdown = 0!");
 
         //offspring
-        if (boatOffspringAmount < 1) Debug.LogError("Zero boat offspring!");
-        if (pirateOffspringAmount < 1) Debug.LogError("Zero pirate offspring!");
-        if (mutationChance <= 0) Debug.LogError("Zero mutation chance!");
-        if (mutationFactor <= 0) Debug.LogError("Zero mutation factor!");
+        if (options.boatOffspringAmount < 1) Debug.LogError("Zero boat offspring!");
+        if (options.pirateOffspringAmount < 1) Debug.LogError("Zero pirate offspring!");
+        if (options.mutationChance <= 0) Debug.LogError("Zero mutation chance!");
+        if (options.mutationFactor <= 0) Debug.LogError("Zero mutation factor!");
 
     }
 }

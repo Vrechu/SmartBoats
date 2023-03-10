@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3597254a05a9174597a7ec9d601b1a8, type: 3}
+  m_Name: Options
+  m_EditorClassIdentifier: 
+  boatPrefabs:
+  - {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb, type: 3}
+  piratePrefabs:
+  - {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594, type: 3}
+  boxPrefabs:
+  - {fileID: 5755888960359600254, guid: 296e89e62486b42ccaa7c506e58ae38a, type: 3}
+  startingBoat: {fileID: 8773015827127742609, guid: 80e4d4b3329284f7299a2d55a9f1b594,
+    type: 3}
+  startingPirate: {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb,
+    type: 3}
+  boatStartAmount: 50
+  pirateStartAmount: 10
+  boxStartAmount: 200
+  boxesPerTick: 5
+  boxSpawnrate: 2
+  boatOffspringAmount: 2
+  pirateOffspringAmount: 1
+  mutationFactor: 2
+  mutationChance: 2
