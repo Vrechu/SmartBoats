@@ -36,8 +36,8 @@ public struct CountdownTimer
     /// <returns>Returns true when the timer reaches 0.</returns>
     public bool CountDown()
     {
-        CheckZeroTime();
         if (paused) return false;
+        CheckZeroTime();
         if (time > 0)
         {
             time -= Time.deltaTime;

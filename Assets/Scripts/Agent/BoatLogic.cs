@@ -5,10 +5,6 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class BoatLogic : AgentLogic
 {
-    [Header("Energy gain")]
-    [SerializeField] private float boxEnergy = 2.0f;
-    [SerializeField] private float pirateEnergy = -100.0f;
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag.Equals("Box"))

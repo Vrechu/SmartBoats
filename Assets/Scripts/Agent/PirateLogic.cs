@@ -4,10 +4,6 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(Rigidbody))]
 public class PirateLogic : AgentLogic
 {
-    [Header("Energy gain")]
-    [SerializeField] private float boxEnergy = 3f;
-    [SerializeField] private float boatEnergy = 30;
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag.Equals("Box"))
@@ -45,6 +41,6 @@ public class PirateLogic : AgentLogic
     protected override void SetReproductionWeight()
     {
         tempEnemyWeight = 0;
-        if (CanReproduce()) tempEnemyWeight = enemyWeight;
+        if (CanReproduce()) tempEnemyWeight = pirateWeight;
     }
 }
