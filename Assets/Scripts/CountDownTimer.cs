@@ -18,7 +18,7 @@ public struct CountdownTimer
     /// <param name="cResetOnZero">When true, the timer resets to max value on 0.</param>
     /// <param name="cPaused">When true, the timer does not automatically start counting down until manually unpaused.</param>
     /// <param name="cClampMax">When true, the timer cannot go over the max value when time is added.</param>
-    public CountdownTimer(float cMaxCountDownTime, float cStartingTime = -1, bool cResetOnZero = false, bool cPaused = false, bool cClampMax = true) 
+    public CountdownTimer(float cMaxCountDownTime, float cStartingTime = -1, bool cResetOnZero = false, bool cPaused = false, bool cClampMax = true)
     {
         countDownTime = cMaxCountDownTime;
         if (cStartingTime > 0) time = cStartingTime;
@@ -36,6 +36,7 @@ public struct CountdownTimer
     /// <returns>Returns true when the timer reaches 0.</returns>
     public bool CountDown()
     {
+        CheckZeroTime();
         if (paused) return false;
         if (time > 0)
         {
@@ -115,5 +116,14 @@ public struct CountdownTimer
     public void Clamp(bool pClamp)
     {
         clampMaxValue = pClamp;
+    }
+
+    private void CheckZeroTime()
+    {
+        if (countDownTime <= 0)
+        {
+            Debug.LogError("Countdown time = 0!");
+            paused = true;
+        }
     }
 }
