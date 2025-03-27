@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -47,24 +48,20 @@ public struct AgentData
     public float sight;
     public float movingSpeed;
     public Vector2 randomDirectionValue;
-    public float boxWeight;
     public float distanceFactor;
-    public float boatWeight;
-    public float boatDistanceFactor;
     public float enemyWeight;
     public float enemyDistanceFactor;
 
-    public AgentData(int steps, int rayRadius, float sight, float movingSpeed, Vector2 randomDirectionValue, float boxWeight, float distanceFactor, float boatWeight, float boatDistanceFactor, float enemyWeight, float enemyDistanceFactor)
+    public AgentData(int steps, int rayRadius, float sight, float movingSpeed,
+        Vector2 randomDirectionValue, float distanceFactor,
+        float enemyWeight, float enemyDistanceFactor)
     {
         this.steps = steps;
         this.rayRadius = rayRadius;
         this.sight = sight;
         this.movingSpeed = movingSpeed;
         this.randomDirectionValue = randomDirectionValue;
-        this.boxWeight = boxWeight;
         this.distanceFactor = distanceFactor;
-        this.boatWeight = boatWeight;
-        this.boatDistanceFactor = boatDistanceFactor;
         this.enemyWeight = enemyWeight;
         this.enemyDistanceFactor = enemyDistanceFactor;
     }
@@ -160,10 +157,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         sight = parent.sight;
         movingSpeed = parent.movingSpeed;
         randomDirectionValue = parent.randomDirectionValue;
-        boxWeight = parent.boxWeight;
         distanceFactor = parent.distanceFactor;
-        boatWeight = parent.boatWeight;
-        boatDistanceFactor = parent.boatDistanceFactor;
         enemyWeight = parent.enemyWeight;
         enemyDistanceFactor = parent.enemyDistanceFactor;
     }
@@ -348,6 +342,11 @@ public class AgentLogic : MonoBehaviour, IComparable
         return direction;
     }
 
+    private void Shoot()
+    {
+        
+    }
+
     /// <summary>
     /// Activates the agent update method.
     /// Does nothing if the agent is already awake.
@@ -398,6 +397,6 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue, boxWeight, distanceFactor, boatWeight, boatDistanceFactor, enemyWeight,  enemyDistanceFactor);
+        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue,  distanceFactor, enemyWeight,  enemyDistanceFactor);
     }
 }

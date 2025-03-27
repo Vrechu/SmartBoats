@@ -7,6 +7,7 @@ public class PirateLogic : AgentLogic
     #region Static Variables
     private static float _boxPoints = 0.1f;
     private static float _boatPoints = 5.0f;
+    private static float _piratepoints = 1;
     #endregion
     
     private void OnTriggerEnter(Collider other)
@@ -25,6 +26,11 @@ public class PirateLogic : AgentLogic
             points += _boatPoints;
             Destroy(other.gameObject);
         }
+    }
+
+    public void AddPoints()
+    {
+        points += _piratepoints;
     }
 
 }
