@@ -77,6 +77,9 @@ public class AgentLogic : MonoBehaviour, IComparable
 {
     private Vector3 _movingDirection;
     private Rigidbody _rigidbody;
+
+    [SerializeField]
+    private GameObject _bullet;
     
     [SerializeField]
     protected float points;
@@ -109,6 +112,13 @@ public class AgentLogic : MonoBehaviour, IComparable
     private float enemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
+
+    [SerializeField]
+    private float projectileSpeed = 2;
+    [SerializeField]
+    private float fireRatePerSecond = 1;
+    private float _shootTimer = 0;
+
 
     [Space(10)]
     [Header("Debug & Help")] 
@@ -326,14 +336,17 @@ public class AgentLogic : MonoBehaviour, IComparable
             switch (raycastHit.collider.gameObject.tag)
             {
                 //All formulas are the same. Only the weights change.
-                case "Box":
+               /* case "Box":
                     utility = distanceIndex * distanceFactor + boxWeight;
                     break;
                 case "Boat":
                     utility = distanceIndex * boatDistanceFactor + boatWeight;
-                    break;
+                    break;*/
                 case "Enemy":
                     utility = distanceIndex * enemyDistanceFactor + enemyWeight;
+
+                    ShootTimer();
+
                     break;
             }
         }
@@ -344,7 +357,32 @@ public class AgentLogic : MonoBehaviour, IComparable
 
     private void Shoot()
     {
+        GameObject bullet = Instantiate(_bullet);
+        CanonballLogic bulletLogic = bullet.AddComponent<CanonballLogic>();
+        bulletLogic._parent = this;
         
+        Debug.Log("pew");
+    }
+
+    public void AddPoints()
+    {
+        points++;
+    }
+
+    
+    private bool ShootTimer()
+    {
+        if (_shootTimer > 0)
+        {
+            _shootTimer -= Time.deltaTime;
+            return false;
+        }
+        else
+        {
+            _shootTimer = fireRatePerSecond;
+            Shoot();
+            return true;
+        }
     }
 
     /// <summary>

@@ -5,27 +5,24 @@ using UnityEngine;
 
 public class CanonballLogic : MonoBehaviour
 {
-    private float speed;
-    private Vector3 direction;
-    private GameObject parent;
+    public float _speed;
+    public Vector3 _direction;
+    public AgentLogic _parent;
 
     private void Update()
     {
-        transform.Translate(direction * speed*Time.deltaTime);   
+        transform.Translate(_direction * _speed*Time.deltaTime);   
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        PirateLogic logic;
         if (other.gameObject.tag.Equals("Enemy") 
-            && other.gameObject != parent)
-        {
-            if ( parent.TryGetComponent<PirateLogic>(out logic))
-            {
-                logic.AddPoints();
-            }
-            else 
+            && other.gameObject != _parent)        {
+            _parent.AddPoints();
+
             Destroy(other.gameObject);
+            Destroy(this);
+            Debug.Log("ouch");
         }
     }
 }

@@ -178,16 +178,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 25
   rayRadius: 13
   sight: 30.676413
   movingSpeed: 4.957724
   randomDirectionValue: {x: 0.42021513, y: -2.2391624}
-  boxWeight: 1.7764232
+  boxWeight: 3.0084121
   distanceFactor: -1.6884991
-  boatWeight: -3.1277308
-  boatDistanceFactor: -2.9300642
+  boatWeight: 0
+  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: 2.8372455
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}

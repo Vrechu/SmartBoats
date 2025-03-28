@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ddd31faeafd45b797e3ac5dbe660d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 1063589168454968477, guid: 3f789965f2f455648a537ec30318ac08, type: 3}
   points: 0
   steps: 0
   rayRadius: 16
