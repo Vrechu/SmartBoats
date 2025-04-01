@@ -114,9 +114,9 @@ public class AgentLogic : MonoBehaviour, IComparable
     private float enemyDistanceFactor;
 
     [SerializeField]
-    private float projectileSpeed = 2;
+    private float projectileSpeed = 2f;
     [SerializeField]
-    private float fireRatePerSecond = 1;
+    private float fireRatePerSecond = 3;
     private float _shootTimer = 0;
 
 
@@ -130,6 +130,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     private Color directionColor;
     [SerializeField, Tooltip("Shows visualization rays.")] 
     private bool debug;
+
+    private List<GameObject> _bullets = new List<GameObject>();
 
     #region Static Variables
     private static float _minimalSteps = 1.0f;
@@ -345,7 +347,7 @@ public class AgentLogic : MonoBehaviour, IComparable
                 case "Enemy":
                     utility = distanceIndex * enemyDistanceFactor + enemyWeight;
 
-                    ShootTimer();
+                    ShootTimer(raycastHit.collider.transform.position);
 
                     break;
             }
@@ -355,11 +357,16 @@ public class AgentLogic : MonoBehaviour, IComparable
         return direction;
     }
 
-    private void Shoot()
+    private void Shoot(Vector3 target)
     {
-        GameObject bullet = Instantiate(_bullet);
+        GameObject bullet = Instantiate(_bullet, this.transform.position + new Vector3(0,1,0), Quaternion.identity);
         CanonballLogic bulletLogic = bullet.AddComponent<CanonballLogic>();
-        bulletLogic._parent = this;
+        _bullets.Add(bullet);
+        bulletLogic._parentLogic = this;
+        bulletLogic._parentObject = gameObject;
+        bulletLogic._direction = (target - transform.position).normalized;
+        bulletLogic._speed = projectileSpeed;
+
         
         Debug.Log("pew");
     }
@@ -370,7 +377,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     }
 
     
-    private bool ShootTimer()
+    private bool ShootTimer(Vector3 target)
     {
         if (_shootTimer > 0)
         {
@@ -380,7 +387,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         else
         {
             _shootTimer = fireRatePerSecond;
-            Shoot();
+            Shoot(target);
             return true;
         }
     }
@@ -436,5 +443,13 @@ public class AgentLogic : MonoBehaviour, IComparable
     public AgentData GetData()
     {
         return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue,  distanceFactor, enemyWeight,  enemyDistanceFactor);
+    }
+
+    private void OnDestroy()
+    {
+        for (int i = 0; i < _bullets.Count; i++) 
+        {         
+            Destroy(_bullets[i]);
+        }
     }
 }
