@@ -569,18 +569,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30.139479
   movingSpeed: 8.981171
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1.8319329
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -4.11569
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -2359,18 +2358,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 32.38561
   movingSpeed: 4.902946
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: -0.1646949
-  boatWeight: -0.9049119
-  boatDistanceFactor: 0
   enemyWeight: -1.6274163
   enemyDistanceFactor: 0.34809303
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -3567,18 +3565,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 15
   sight: 29.880621
   movingSpeed: 9.550357
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: -1.8933754
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -3.9572954
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -3944,18 +3941,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 14
   sight: 32.896233
   movingSpeed: 4.588797
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: -0.96477306
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: 2.1377597
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -6515,18 +6511,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 21
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -0.43504667, y: 2.7264955}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -6626,18 +6621,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 17
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: -2.6644578
-  boatDistanceFactor: 3.28617
   enemyWeight: -3.3485603
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -6737,18 +6731,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: -0.7684741
-  distanceFactor: 1.2868886
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -4.306549
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -7064,18 +7057,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 26.616262
   movingSpeed: 4.667297
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 3.0290418
-  distanceFactor: -2.0868287
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -7308,18 +7300,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.857231
   movingSpeed: 11.421544
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 0.08058357
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -0.02113676
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -7635,18 +7626,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 28.146986
   movingSpeed: 3.1654873
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1.3302917
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: -2.2608938
   enemyWeight: 1.3698864
   enemyDistanceFactor: 1.6309128
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -8370,18 +8360,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 22
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: -2.1341963
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -3.585689
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -8880,18 +8869,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.937931
   movingSpeed: 4.965474
   randomDirectionValue: {x: 0.09845054, y: 3.1778836}
-  boxWeight: -1.3587389
-  distanceFactor: -1.3899937
-  boatWeight: 1.9123926
-  boatDistanceFactor: 1.7660325
   enemyWeight: -2.8890443
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -9789,18 +9777,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.926302
   movingSpeed: 5.895912
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 3.2605772
-  distanceFactor: 1.844994
-  boatWeight: 0
-  boatDistanceFactor: -0.5305033
   enemyWeight: -1.8721048
   enemyDistanceFactor: 0.4361961
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -10033,18 +10020,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -2.2641826, y: 2.5675743}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 3.2382326
   enemyWeight: -2.40872
   enemyDistanceFactor: -0.6775532
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -11551,18 +11537,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 31.107403
   movingSpeed: 5.390415
   randomDirectionValue: {x: -0.41044176, y: -2.2154093}
-  boxWeight: 3.8385239
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: -0.67892456
   enemyWeight: -1.8209187
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -12846,7 +12831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameObjectToBeCreated:
   - {fileID: 7619517824896039313, guid: f7ce76d362a274c87abe40cdb8bc0acb, type: 3}
-  count: 14
+  count: 20
   randomRotationMinimal: {x: 0, y: -89, z: 0}
   randomRotationMaximal: {x: 0, y: 90, z: 0}
 --- !u!64 &1003293719
@@ -13515,18 +13500,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.933933
   movingSpeed: 5.2854123
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: -2.0668755
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -13759,18 +13743,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30.570824
   movingSpeed: 4.6178646
   randomDirectionValue: {x: 1.2670212, y: 2.818341}
-  boxWeight: 1.7364416
-  distanceFactor: -0.97678185
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -4.245389
   enemyDistanceFactor: 1.4542708
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -14352,18 +14335,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 28.10854
   movingSpeed: 4.648643
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: -2.3166804
-  distanceFactor: 1
-  boatWeight: -0.82426834
-  boatDistanceFactor: 2.9592924
   enemyWeight: -1
   enemyDistanceFactor: -0.3410592
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -16100,18 +16082,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.882658
   movingSpeed: 9.387384
   randomDirectionValue: {x: -2.7169065, y: 0.044225097}
-  boxWeight: -1.8867927
-  distanceFactor: 2.697794
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -2.790092
   enemyDistanceFactor: -3.234725
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -16211,18 +16192,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: 0.68825436
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -16455,18 +16435,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.945532
   movingSpeed: 4.3574376
   randomDirectionValue: {x: -2.3046665, y: -1.2341843}
-  boxWeight: 1
-  distanceFactor: 0.723845
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -3.5072727
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -18303,7 +18282,7 @@ MonoBehaviour:
   mutationChance: 35
   boatParentSize: 5
   pirateParentSize: 2
-  simulationTimer: 5
+  simulationTimer: 10
   simulationCount: 0
   runOnStart: 1
   generationCount: -1
@@ -18314,18 +18293,20 @@ MonoBehaviour:
     sight: 0
     movingSpeed: 0
     randomDirectionValue: {x: 0, y: 0}
-    distanceFactor: 0
     enemyWeight: 0
     enemyDistanceFactor: 0
+    projectileSpeed: 0
+    fireRatePerSecond: 0
   lastPirateWinnerData:
     steps: 0
     rayRadius: 0
     sight: 0
     movingSpeed: 0
     randomDirectionValue: {x: 0, y: 0}
-    distanceFactor: 0
     enemyWeight: 0
     enemyDistanceFactor: 0
+    projectileSpeed: 0
+    fireRatePerSecond: 0
 --- !u!4 &1448668717
 Transform:
   m_ObjectHideFlags: 0
@@ -18471,18 +18452,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 18
   sight: 29.965832
   movingSpeed: 2.7334638
   randomDirectionValue: {x: -2.5852127, y: 4.4761887}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: -2.4243212
   enemyWeight: -1
   enemyDistanceFactor: 1.303585
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -19463,18 +19443,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -4.1690044, y: 1.9152488}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -20056,18 +20035,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30.120375
   movingSpeed: 4.9281907
   randomDirectionValue: {x: 1.2232985, y: 3.6742377}
-  boxWeight: 3.5981452
-  distanceFactor: 1
-  boatWeight: 2.6826932
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -2.471284
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -20649,18 +20627,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 29.875484
   movingSpeed: 9.961285
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: -0.9763379
   enemyWeight: 1.7472668
   enemyDistanceFactor: -2.8565354
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -21641,18 +21618,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 20
   sight: 29.911108
   movingSpeed: 7.111416
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -3.8680744
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -22500,18 +22476,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 17
   sight: 29.876358
   movingSpeed: 9.891424
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0.8982706
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -24427,18 +24402,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -0.2217784, y: 4.281418}
-  boxWeight: 3.104947
-  distanceFactor: -2.3754625
-  boatWeight: -0.646513
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -25286,18 +25260,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 22
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1
-  distanceFactor: 1
-  boatWeight: 0.14938545
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}
@@ -25929,18 +25902,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac962a5b50ed44584b65086c49fa5d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bullet: {fileID: 0}
   points: 0
   steps: 0
   rayRadius: 16
   sight: 26.958277
   movingSpeed: 4.6630216
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: 1.9405079
-  distanceFactor: 1
-  boatWeight: 0
-  boatDistanceFactor: 0
   enemyWeight: -1
   enemyDistanceFactor: -1
+  projectileSpeed: 2
+  fireRatePerSecond: 1
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}

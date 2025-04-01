@@ -123,8 +123,10 @@ MonoBehaviour:
   sight: 30
   movingSpeed: 4
   randomDirectionValue: {x: -1, y: 1}
-  enemyWeight: 1
+  enemyWeight: 0
   enemyDistanceFactor: 0
+  bulletWeight: -1
+  bulletDistanceFactor: -1
   projectileSpeed: 3
   fireRatePerSecond: 0.5
   visionColor: {r: 0.053266272, g: 0.5943396, b: 0.08738161, a: 1}

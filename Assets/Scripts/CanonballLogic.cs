@@ -10,10 +10,28 @@ public class CanonballLogic : MonoBehaviour
     public Vector3 _direction;
     public AgentLogic _parentLogic;
     public GameObject _parentObject;
+    public float _maxTravelDistance;
+    private float _distanceTravelled = 0;
 
     private void Update()
     {
-        transform.Translate(_direction * _speed*Time.deltaTime);   
+        float frameTravelDistance = _speed * Time.deltaTime;
+        Move(frameTravelDistance);
+        MeasureDistanceTraveled(frameTravelDistance);
+    }
+
+    private void Move(float distance)
+    {
+        transform.Translate(_direction * distance);
+    }
+
+    private void MeasureDistanceTraveled(float distance)
+    {
+        _distanceTravelled += distance;
+        if (_distanceTravelled > _maxTravelDistance)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,4 +47,6 @@ public class CanonballLogic : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    
 }

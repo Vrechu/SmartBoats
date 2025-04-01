@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
@@ -50,6 +51,8 @@ public struct AgentData
     public Vector2 randomDirectionValue;
     public float enemyWeight;
     public float enemyDistanceFactor;
+    public float bulletWeight;
+    public float bulletDistanceFactor;
 
     public float projectileSpeed;
     public float fireRatePerSecond;
@@ -57,7 +60,7 @@ public struct AgentData
     public AgentData(int steps, int rayRadius, float sight, float movingSpeed,
         Vector2 randomDirectionValue, 
         float enemyWeight, float enemyDistanceFactor,
-
+        float bulletWeight, float bulletDistanceFactor,
         float projectileSpeed, float fireRatePerSecond)
     {
         this.steps = steps;
@@ -67,6 +70,8 @@ public struct AgentData
         this.randomDirectionValue = randomDirectionValue;
         this.enemyWeight = enemyWeight;
         this.enemyDistanceFactor = enemyDistanceFactor;
+        this.bulletWeight = bulletWeight;
+        this.bulletDistanceFactor = bulletDistanceFactor;
 
         this.projectileSpeed = projectileSpeed;
         this.fireRatePerSecond = fireRatePerSecond;
@@ -107,17 +112,14 @@ public class AgentLogic : MonoBehaviour, IComparable
     [Space(10)]
     [Header("Weights")]
     [SerializeField]
-    /*private float boxWeight;
-    [SerializeField]
-    private float distanceFactor;
-    [SerializeField]
-    private float boatWeight;
-    [SerializeField]
-    private float boatDistanceFactor;
-    [SerializeField]*/
     private float enemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
+    [SerializeField]
+    private float bulletWeight;
+    [SerializeField]
+    private float bulletDistanceFactor;
+
 
     [Space(10)]
     [Header("Shooting")]
@@ -139,7 +141,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     [SerializeField, Tooltip("Shows visualization rays.")] 
     private bool debug;
 
-    private List<GameObject> _bullets = new List<GameObject>();
+    protected List<GameObject> _bullets = new List<GameObject>();
 
     #region Static Variables
     private static float _minimalSteps = 1.0f;
@@ -150,14 +152,20 @@ public class AgentLogic : MonoBehaviour, IComparable
     private static float _sightInfluenceInSpeed = 0.0625f;
     private static float _maxUtilityChoiceChance = 0.85f;
 
-
+    //shooting
     private static float _minimalProjectileSpeed = 2.0f;
     private static float _minimalFireRatePerSecond = 0.2f;
     private static float _fireRateInfluenceInProjectileSpeed = 0.01f;
     private static float _ProjectileSpeedInfluenceInFireRate = 0.01f;
 
+    //points
+    private static float _boxPoints = 0.1f;
+    private static float _boatPoints = 5.0f;
+    private static float _piratepoints = 0;
+    private static float _bulletPoints = -100;
+
     #endregion
-    
+
     private void Awake()
     {
         Initiate();
@@ -186,7 +194,10 @@ public class AgentLogic : MonoBehaviour, IComparable
         randomDirectionValue = parent.randomDirectionValue;
         enemyWeight = parent.enemyWeight;
         enemyDistanceFactor = parent.enemyDistanceFactor;
+        bulletWeight = parent.bulletWeight;
+        bulletDistanceFactor = parent.bulletDistanceFactor;
 
+        //shooting
         projectileSpeed = parent.projectileSpeed;
         fireRatePerSecond = parent.fireRatePerSecond;
 
@@ -263,6 +274,15 @@ public class AgentLogic : MonoBehaviour, IComparable
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             enemyDistanceFactor += Random.Range(-mutationFactor, +mutationFactor);
+        }
+
+        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        {
+            bulletWeight += Random.Range(-mutationFactor, +mutationFactor);
+        }
+        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        {
+            bulletDistanceFactor += Random.Range(-mutationFactor, +mutationFactor);
         }
 
         //Shooting, added
@@ -382,12 +402,9 @@ public class AgentLogic : MonoBehaviour, IComparable
             switch (raycastHit.collider.gameObject.tag)
             {
                 //All formulas are the same. Only the weights change.
-               /* case "Box":
-                    utility = distanceIndex * distanceFactor + boxWeight;
+                case "bullet":
+                    utility = distanceIndex * bulletDistanceFactor + bulletWeight;
                     break;
-                case "Boat":
-                    utility = distanceIndex * boatDistanceFactor + boatWeight;
-                    break;*/
                 case "Enemy":
                     utility = distanceIndex * enemyDistanceFactor + enemyWeight;
 
@@ -410,6 +427,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         bulletLogic._parentObject = gameObject;
         bulletLogic._direction = (target - transform.position).normalized;
         bulletLogic._speed = projectileSpeed;
+        bulletLogic._maxTravelDistance = sight;
     }
 
     public void AddPoints()
@@ -488,7 +506,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         return new AgentData(steps, rayRadius, sight, movingSpeed,
             randomDirectionValue,  
             enemyWeight,  enemyDistanceFactor,
-            
+            bulletWeight, bulletDistanceFactor,
             projectileSpeed, fireRatePerSecond);
     }
 
@@ -499,4 +517,24 @@ public class AgentLogic : MonoBehaviour, IComparable
             Destroy(_bullets[i]);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag.Equals("Bullet")
+            && !_bullets.Contains(other.gameObject))
+        {
+            points += _bulletPoints;
+            
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag.Equals("Boat"))
+        {
+            points += _boatPoints;
+            Destroy(other.gameObject);
+        }
+    }
+
 }
