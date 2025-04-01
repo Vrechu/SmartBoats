@@ -185,14 +185,10 @@ MonoBehaviour:
   sight: 30
   movingSpeed: 5
   randomDirectionValue: {x: -1, y: 1}
-  boxWeight: -0.3992263
-  distanceFactor: 3.0084121
-  boatWeight: -0.065751314
-  boatDistanceFactor: 0
-  enemyWeight: -1
-  enemyDistanceFactor: -1
+  enemyWeight: -2.3992262
+  enemyDistanceFactor: 1.0084121
   projectileSpeed: 2
-  fireRatePerSecond: 1
+  fireRatePerSecond: 0
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}

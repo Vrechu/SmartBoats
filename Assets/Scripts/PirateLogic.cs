@@ -27,10 +27,4 @@ public class PirateLogic : AgentLogic
             Destroy(other.gameObject);
         }
     }
-
-    public void AddPoints()
-    {
-        points += _piratepoints;
-    }
-
 }

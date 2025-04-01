@@ -48,22 +48,28 @@ public struct AgentData
     public float sight;
     public float movingSpeed;
     public Vector2 randomDirectionValue;
-    public float distanceFactor;
     public float enemyWeight;
     public float enemyDistanceFactor;
 
+    public float projectileSpeed;
+    public float fireRatePerSecond;
+
     public AgentData(int steps, int rayRadius, float sight, float movingSpeed,
-        Vector2 randomDirectionValue, float distanceFactor,
-        float enemyWeight, float enemyDistanceFactor)
+        Vector2 randomDirectionValue, 
+        float enemyWeight, float enemyDistanceFactor,
+
+        float projectileSpeed, float fireRatePerSecond)
     {
         this.steps = steps;
         this.rayRadius = rayRadius;
         this.sight = sight;
         this.movingSpeed = movingSpeed;
         this.randomDirectionValue = randomDirectionValue;
-        this.distanceFactor = distanceFactor;
         this.enemyWeight = enemyWeight;
         this.enemyDistanceFactor = enemyDistanceFactor;
+
+        this.projectileSpeed = projectileSpeed;
+        this.fireRatePerSecond = fireRatePerSecond;
     }
 }
 
@@ -101,22 +107,24 @@ public class AgentLogic : MonoBehaviour, IComparable
     [Space(10)]
     [Header("Weights")]
     [SerializeField]
-    private float boxWeight;
+    /*private float boxWeight;
     [SerializeField]
     private float distanceFactor;
     [SerializeField]
     private float boatWeight;
     [SerializeField]
     private float boatDistanceFactor;
-    [SerializeField]
+    [SerializeField]*/
     private float enemyWeight;
     [SerializeField]
     private float enemyDistanceFactor;
 
+    [Space(10)]
+    [Header("Shooting")]
     [SerializeField]
-    private float projectileSpeed = 2f;
+    private float projectileSpeed;
     [SerializeField]
-    private float fireRatePerSecond = 3;
+    private float fireRatePerSecond;
     private float _shootTimer = 0;
 
 
@@ -141,6 +149,13 @@ public class AgentLogic : MonoBehaviour, IComparable
     private static float _speedInfluenceInSight = 0.1250f;
     private static float _sightInfluenceInSpeed = 0.0625f;
     private static float _maxUtilityChoiceChance = 0.85f;
+
+
+    private static float _minimalProjectileSpeed = 2.0f;
+    private static float _minimalFireRatePerSecond = 0.2f;
+    private static float _fireRateInfluenceInProjectileSpeed = 0.01f;
+    private static float _ProjectileSpeedInfluenceInFireRate = 0.01f;
+
     #endregion
     
     private void Awake()
@@ -169,9 +184,12 @@ public class AgentLogic : MonoBehaviour, IComparable
         sight = parent.sight;
         movingSpeed = parent.movingSpeed;
         randomDirectionValue = parent.randomDirectionValue;
-        distanceFactor = parent.distanceFactor;
         enemyWeight = parent.enemyWeight;
         enemyDistanceFactor = parent.enemyDistanceFactor;
+
+        projectileSpeed = parent.projectileSpeed;
+        fireRatePerSecond = parent.fireRatePerSecond;
+
     }
 
     /// <summary>
@@ -222,7 +240,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         {
             randomDirectionValue.y += Random.Range(-mutationFactor, +mutationFactor);
         }
-        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        /*if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             boxWeight += Random.Range(-mutationFactor, +mutationFactor);
         }
@@ -237,7 +255,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             boatDistanceFactor +=  Random.Range(-mutationFactor, +mutationFactor);
-        }
+        }*/
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             enemyWeight += Random.Range(-mutationFactor, +mutationFactor);
@@ -245,6 +263,32 @@ public class AgentLogic : MonoBehaviour, IComparable
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             enemyDistanceFactor += Random.Range(-mutationFactor, +mutationFactor);
+        }
+
+        //Shooting, added
+
+        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        {
+            float projectileSpeedIncrease = Random.Range(-mutationFactor, +mutationFactor);
+            projectileSpeed += projectileSpeedIncrease;
+            projectileSpeed = Mathf.Max(projectileSpeed, _minimalProjectileSpeed);
+            if (projectileSpeedIncrease > 0.0f)
+            {
+                fireRatePerSecond -= projectileSpeedIncrease * _ProjectileSpeedInfluenceInFireRate;
+                fireRatePerSecond = Mathf.Max(fireRatePerSecond, _minimalFireRatePerSecond);
+            }
+        }
+
+        if (Random.Range(0.0f, 100.0f) <= mutationChance)
+        {
+            float fireRateIncrease = Random.Range(-mutationFactor, +mutationFactor);
+            fireRatePerSecond += fireRateIncrease;
+            fireRatePerSecond = Mathf.Max(fireRatePerSecond, _minimalFireRatePerSecond);
+            if (fireRateIncrease > 0.0f)
+            {
+                projectileSpeed -= fireRateIncrease * _fireRateInfluenceInProjectileSpeed;
+                projectileSpeed = Mathf.Max(projectileSpeed, _minimalProjectileSpeed);
+            }
         }
     }
 
@@ -366,9 +410,6 @@ public class AgentLogic : MonoBehaviour, IComparable
         bulletLogic._parentObject = gameObject;
         bulletLogic._direction = (target - transform.position).normalized;
         bulletLogic._speed = projectileSpeed;
-
-        
-        Debug.Log("pew");
     }
 
     public void AddPoints()
@@ -379,6 +420,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     
     private bool ShootTimer(Vector3 target)
     {
+        float countDownTimer = 1f / fireRatePerSecond;
+
         if (_shootTimer > 0)
         {
             _shootTimer -= Time.deltaTime;
@@ -386,7 +429,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         }
         else
         {
-            _shootTimer = fireRatePerSecond;
+            _shootTimer = countDownTimer;
             Shoot(target);
             return true;
         }
@@ -442,7 +485,11 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(steps, rayRadius, sight, movingSpeed, randomDirectionValue,  distanceFactor, enemyWeight,  enemyDistanceFactor);
+        return new AgentData(steps, rayRadius, sight, movingSpeed,
+            randomDirectionValue,  
+            enemyWeight,  enemyDistanceFactor,
+            
+            projectileSpeed, fireRatePerSecond);
     }
 
     private void OnDestroy()

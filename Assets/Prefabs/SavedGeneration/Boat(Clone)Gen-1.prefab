@@ -180,19 +180,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 0}
   points: 0
-  steps: 25
-  rayRadius: 13
+  steps: 22
+  rayRadius: 16
   sight: 30
   movingSpeed: 5
-  randomDirectionValue: {x: 0.42021513, y: -0.3992263}
-  boxWeight: 3.0084121
-  distanceFactor: 0.9342487
-  boatWeight: 0
-  boatDistanceFactor: 0
-  enemyWeight: -1
-  enemyDistanceFactor: -1
+  randomDirectionValue: {x: -1, y: -0.3992263}
+  enemyWeight: -1.4206774
+  enemyDistanceFactor: -3.9627826
   projectileSpeed: 2
-  fireRatePerSecond: 1
+  fireRatePerSecond: 0.2
   visionColor: {r: 0.21466713, g: 0.29546288, b: 0.6792453, a: 1}
   foundColor: {r: 0.59033465, g: 0.59780955, b: 0.6226415, a: 1}
   directionColor: {r: 0.4433962, g: 0.39784816, b: 0.10666606, a: 1}

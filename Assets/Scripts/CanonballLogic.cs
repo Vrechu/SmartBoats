@@ -16,21 +16,6 @@ public class CanonballLogic : MonoBehaviour
         transform.Translate(_direction * _speed*Time.deltaTime);   
     }
 
-    /*private void ontr (Collision other)
-    {
-        if (other.gameObject != _parentObject)
-        {
-            if (other.gameObject.tag.Equals("Enemy"))
-            {
-                _parentLogic.AddPoints();
-
-                Destroy(other.gameObject);
-                Debug.Log("ouch");
-            }
-            Destroy(this);
-        }
-    }*/
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != _parentObject)
@@ -40,7 +25,6 @@ public class CanonballLogic : MonoBehaviour
                 _parentLogic.AddPoints();
 
                 Destroy(other.gameObject);
-                Debug.Log("ouch");
             }
             Destroy(this.gameObject);
         }
