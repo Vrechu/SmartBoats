@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 /// </summary>
 struct AgentDirection : IComparable
 {
-    public Vector3 Direction { get; }
+    public Vector3 Direction { get; set; }
     public float utility;
 
     public AgentDirection(Vector3 direction, float utility)
@@ -55,13 +55,13 @@ public struct AgentData
     public float bulletDistanceFactor;
 
     public float projectileSpeed;
-    public float fireRatePerSecond;
+    public float fireRatePerMinute;
 
     public AgentData(int steps, int rayRadius, float sight, float movingSpeed,
         Vector2 randomDirectionValue, 
         float enemyWeight, float enemyDistanceFactor,
         float bulletWeight, float bulletDistanceFactor,
-        float projectileSpeed, float fireRatePerSecond)
+        float projectileSpeed, float fireRatePerMinute)
     {
         this.steps = steps;
         this.rayRadius = rayRadius;
@@ -74,7 +74,7 @@ public struct AgentData
         this.bulletDistanceFactor = bulletDistanceFactor;
 
         this.projectileSpeed = projectileSpeed;
-        this.fireRatePerSecond = fireRatePerSecond;
+        this.fireRatePerMinute = fireRatePerMinute;
     }
 }
 
@@ -126,8 +126,13 @@ public class AgentLogic : MonoBehaviour, IComparable
     [SerializeField]
     private float projectileSpeed;
     [SerializeField]
-    private float fireRatePerSecond;
-    private float _shootTimer = 0;
+    private float fireRatePerMinute;
+
+    [SerializeField]
+    private float _shootTimer;
+    private float _shootTime;
+    private bool _shotTimed = false;
+
 
 
     [Space(10)]
@@ -135,7 +140,9 @@ public class AgentLogic : MonoBehaviour, IComparable
     [SerializeField]
     private Color visionColor;
     [SerializeField]
-    private Color foundColor;
+    private Color bulletFoundColor;
+    [SerializeField]
+    private Color enemyFoundColor;
     [SerializeField]
     private Color directionColor;
     [SerializeField, Tooltip("Shows visualization rays.")] 
@@ -154,7 +161,7 @@ public class AgentLogic : MonoBehaviour, IComparable
 
     //shooting
     private static float _minimalProjectileSpeed = 2.0f;
-    private static float _minimalFireRatePerSecond = 0.2f;
+    private static float _minimalFireRatePerMinute = 0.2f;
     private static float _fireRateInfluenceInProjectileSpeed = 0.01f;
     private static float _ProjectileSpeedInfluenceInFireRate = 0.01f;
 
@@ -179,6 +186,8 @@ public class AgentLogic : MonoBehaviour, IComparable
         points = 0;
         steps = 360 / rayRadius;
         _rigidbody = GetComponent<Rigidbody>();
+        _shootTime = 60 / fireRatePerMinute;
+        _shootTimer = _shootTime;
     }
     
     /// <summary>
@@ -199,7 +208,7 @@ public class AgentLogic : MonoBehaviour, IComparable
 
         //shooting
         projectileSpeed = parent.projectileSpeed;
-        fireRatePerSecond = parent.fireRatePerSecond;
+        fireRatePerMinute = parent.fireRatePerMinute;
 
     }
 
@@ -251,22 +260,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         {
             randomDirectionValue.y += Random.Range(-mutationFactor, +mutationFactor);
         }
-        /*if (Random.Range(0.0f, 100.0f) <= mutationChance)
-        {
-            boxWeight += Random.Range(-mutationFactor, +mutationFactor);
-        }
-        if (Random.Range(0.0f, 100.0f) <= mutationChance)
-        {
-            distanceFactor += Random.Range(-mutationFactor, +mutationFactor);
-        }
-        if (Random.Range(0.0f, 100.0f) <= mutationChance)
-        {
-            boatWeight += Random.Range(-mutationFactor, +mutationFactor);
-        }
-        if (Random.Range(0.0f, 100.0f) <= mutationChance)
-        {
-            boatDistanceFactor +=  Random.Range(-mutationFactor, +mutationFactor);
-        }*/
+
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             enemyWeight += Random.Range(-mutationFactor, +mutationFactor);
@@ -294,16 +288,16 @@ public class AgentLogic : MonoBehaviour, IComparable
             projectileSpeed = Mathf.Max(projectileSpeed, _minimalProjectileSpeed);
             if (projectileSpeedIncrease > 0.0f)
             {
-                fireRatePerSecond -= projectileSpeedIncrease * _ProjectileSpeedInfluenceInFireRate;
-                fireRatePerSecond = Mathf.Max(fireRatePerSecond, _minimalFireRatePerSecond);
+                fireRatePerMinute -= projectileSpeedIncrease * _ProjectileSpeedInfluenceInFireRate;
+                fireRatePerMinute = Mathf.Max(fireRatePerMinute, _minimalFireRatePerMinute);
             }
         }
 
         if (Random.Range(0.0f, 100.0f) <= mutationChance)
         {
             float fireRateIncrease = Random.Range(-mutationFactor, +mutationFactor);
-            fireRatePerSecond += fireRateIncrease;
-            fireRatePerSecond = Mathf.Max(fireRatePerSecond, _minimalFireRatePerSecond);
+            fireRatePerMinute += fireRateIncrease;
+            fireRatePerMinute = Mathf.Max(fireRatePerMinute, _minimalFireRatePerMinute);
             if (fireRateIncrease > 0.0f)
             {
                 projectileSpeed -= fireRateIncrease * _fireRateInfluenceInProjectileSpeed;
@@ -334,6 +328,8 @@ public class AgentLogic : MonoBehaviour, IComparable
         forward.y = 0.0f;
         forward.Normalize();
         Vector3 selfPosition = selfTransform.position;
+
+        _shotTimed = false;
 
         //Initiate the rayDirection on the opposite side of the spectrum.
         Vector3 rayDirection = Quaternion.Euler(0, -1.0f * steps * (rayRadius / 2.0f), 0) * forward;
@@ -385,10 +381,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         //For now, the sightFactor is only used to control the long sight in front of the agent.
         if (Physics.Raycast(selfPosition, rayDirection, out RaycastHit raycastHit, sight * sightFactor))
         {
-            if (debug)
-            {
-                Debug.DrawLine(selfPosition, raycastHit.point, foundColor);
-            }
+            
             
             //Calculate the normalized distance from the agent to the intersected object.
             //Closer objects will have distancedNormalized close to 0, and further objects will have it close to 1.
@@ -402,13 +395,30 @@ public class AgentLogic : MonoBehaviour, IComparable
             switch (raycastHit.collider.gameObject.tag)
             {
                 //All formulas are the same. Only the weights change.
-                case "bullet":
-                    utility = distanceIndex * bulletDistanceFactor + bulletWeight;
+                case "Bullet":
+
+                    if (!_bullets.Contains(raycastHit.collider.gameObject))
+                    {
+                        direction.Direction = Vector3.Cross(direction.Direction, Vector3.up);
+
+                        utility = distanceIndex * bulletDistanceFactor + bulletWeight;
+
+                        if (debug)
+                        {
+                            Debug.DrawLine(selfPosition, raycastHit.point, bulletFoundColor);
+                        }
+                    }
+
                     break;
                 case "Enemy":
                     utility = distanceIndex * enemyDistanceFactor + enemyWeight;
 
-                    ShootTimer(raycastHit.collider.transform.position);
+                    if (debug)
+                    {
+                        Debug.DrawLine(selfPosition, raycastHit.point, enemyFoundColor);
+                    }
+
+                    if (!_shotTimed)ShootTimer(raycastHit.collider.transform.position);
 
                     break;
             }
@@ -418,6 +428,10 @@ public class AgentLogic : MonoBehaviour, IComparable
         return direction;
     }
 
+    /// <summary>
+    /// Creates a projectile and sets its speed and dirrection.
+    /// </summary>
+    /// <param name="target"></param>
     private void Shoot(Vector3 target)
     {
         GameObject bullet = Instantiate(_bullet, this.transform.position + new Vector3(0,1,0), Quaternion.identity);
@@ -430,16 +444,22 @@ public class AgentLogic : MonoBehaviour, IComparable
         bulletLogic._maxTravelDistance = sight;
     }
 
+    /// <summary>
+    /// adds a static amount of points
+    /// </summary>
     public void AddPoints()
     {
         points++;
     }
 
-    
+    /// <summary>
+    /// Counts down to shoot when a target is in range
+    /// </summary>
+    /// <param name="target">target to shoot</param>
+    /// <returns></returns>
     private bool ShootTimer(Vector3 target)
     {
-        float countDownTimer = 1f / fireRatePerSecond;
-
+        _shotTimed = true;
         if (_shootTimer > 0)
         {
             _shootTimer -= Time.deltaTime;
@@ -447,7 +467,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         }
         else
         {
-            _shootTimer = countDownTimer;
+            _shootTimer = _shootTime;
             Shoot(target);
             return true;
         }
@@ -507,9 +527,10 @@ public class AgentLogic : MonoBehaviour, IComparable
             randomDirectionValue,  
             enemyWeight,  enemyDistanceFactor,
             bulletWeight, bulletDistanceFactor,
-            projectileSpeed, fireRatePerSecond);
+            projectileSpeed, fireRatePerMinute);
     }
 
+    // dostroys all projectiles created by this ship when destroyed
     private void OnDestroy()
     {
         for (int i = 0; i < _bullets.Count; i++) 
@@ -518,22 +539,13 @@ public class AgentLogic : MonoBehaviour, IComparable
         }
     }
 
+    //removes points when hit by bullet
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag.Equals("Bullet")
             && !_bullets.Contains(other.gameObject))
         {
-            points += _bulletPoints;
-            
-        }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag.Equals("Boat"))
-        {
-            points += _boatPoints;
-            Destroy(other.gameObject);
+            points += _bulletPoints;            
         }
     }
 

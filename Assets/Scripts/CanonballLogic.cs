@@ -25,6 +25,10 @@ public class CanonballLogic : MonoBehaviour
         transform.Translate(_direction * distance);
     }
 
+    /// <summary>
+    /// destroy projectile if it moves it's max distance.
+    /// </summary>
+    /// <param name="distance"></param>
     private void MeasureDistanceTraveled(float distance)
     {
         _distanceTravelled += distance;
@@ -34,6 +38,7 @@ public class CanonballLogic : MonoBehaviour
         }
     }
 
+    //add points to parent ship, destroy hit ship, and destroy projectile. 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != _parentObject)
@@ -46,7 +51,5 @@ public class CanonballLogic : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-    }
-
-    
+    }    
 }
