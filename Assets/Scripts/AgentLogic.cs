@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -131,7 +132,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     [SerializeField]
     private float _shootTimer;
     private float _shootTime;
-    private bool _shotTimed = false;
+    private bool _canShoot = false;
 
 
 
@@ -161,7 +162,7 @@ public class AgentLogic : MonoBehaviour, IComparable
 
     //shooting
     private static float _minimalProjectileSpeed = 2.0f;
-    private static float _minimalFireRatePerMinute = 0.2f;
+    private static float _minimalFireRatePerMinute = 6;
     private static float _fireRateInfluenceInProjectileSpeed = 0.01f;
     private static float _ProjectileSpeedInfluenceInFireRate = 0.01f;
 
@@ -185,9 +186,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     {
         points = 0;
         steps = 360 / rayRadius;
-        _rigidbody = GetComponent<Rigidbody>();
-        _shootTime = 60 / fireRatePerMinute;
-        _shootTimer = _shootTime;
+        _rigidbody = GetComponent<Rigidbody>();       
     }
     
     /// <summary>
@@ -306,11 +305,18 @@ public class AgentLogic : MonoBehaviour, IComparable
         }
     }
 
+    public void SetTimer()
+    {
+        _shootTime = 60 / fireRatePerMinute;
+        _shootTimer = _shootTime;
+    }
+
     private void Update()
     {
         if (_isAwake)
         {
-            Act();    
+            Act();
+            ShootTimer();
         }
     }
 
@@ -328,8 +334,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         forward.y = 0.0f;
         forward.Normalize();
         Vector3 selfPosition = selfTransform.position;
-
-        _shotTimed = false;
+        
 
         //Initiate the rayDirection on the opposite side of the spectrum.
         Vector3 rayDirection = Quaternion.Euler(0, -1.0f * steps * (rayRadius / 2.0f), 0) * forward;
@@ -418,7 +423,7 @@ public class AgentLogic : MonoBehaviour, IComparable
                         Debug.DrawLine(selfPosition, raycastHit.point, enemyFoundColor);
                     }
 
-                    if (!_shotTimed)ShootTimer(raycastHit.collider.transform.position);
+                    if (_canShoot)Shoot(raycastHit.collider.transform.position);
 
                     break;
             }
@@ -442,6 +447,9 @@ public class AgentLogic : MonoBehaviour, IComparable
         bulletLogic._direction = (target - transform.position).normalized;
         bulletLogic._speed = projectileSpeed;
         bulletLogic._maxTravelDistance = sight;
+
+        _shootTimer = _shootTime;
+        _canShoot = false;
     }
 
     /// <summary>
@@ -457,20 +465,14 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// </summary>
     /// <param name="target">target to shoot</param>
     /// <returns></returns>
-    private bool ShootTimer(Vector3 target)
+    private void ShootTimer()
     {
-        _shotTimed = true;
         if (_shootTimer > 0)
         {
+            _canShoot = false;
             _shootTimer -= Time.deltaTime;
-            return false;
         }
-        else
-        {
-            _shootTimer = _shootTime;
-            Shoot(target);
-            return true;
-        }
+        else _canShoot = true;
     }
 
     /// <summary>
@@ -548,5 +550,4 @@ public class AgentLogic : MonoBehaviour, IComparable
             points += _bulletPoints;            
         }
     }
-
 }

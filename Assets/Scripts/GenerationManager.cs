@@ -133,6 +133,7 @@ public class GenerationManager : MonoBehaviour
                 }
 
                 pirate.Mutate(mutationFactor, mutationChance);
+                pirate.SetTimer();
                 pirate.AwakeUp();
             }
         }
