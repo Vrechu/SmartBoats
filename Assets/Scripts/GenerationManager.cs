@@ -37,6 +37,9 @@ public class GenerationManager : MonoBehaviour
     [SerializeField, Tooltip("Initial count for the simulation. Used for the Prefabs naming.")]
     private int generationCount;
 
+    [SerializeField, Tooltip("Logs generations in .txt file.")]
+    private bool logGenerations;
+
     [Space(10)] 
     [Header("Prefab Saving")]
     [SerializeField]
@@ -57,6 +60,8 @@ public class GenerationManager : MonoBehaviour
     private BoatLogic[] _boatParents;
     private PirateLogic[] _pirateParents;
 
+    private LogWinningPirates _pirateLog;
+
     private void Awake()
     {
         Random.InitState(6);
@@ -68,6 +73,8 @@ public class GenerationManager : MonoBehaviour
         {
             StartSimulation();
         }
+
+        _pirateLog = LogWinningPirates.LogSingleton;
     }
     
     private void Update()
@@ -212,7 +219,8 @@ public class GenerationManager : MonoBehaviour
         
         //Winners:
         Debug.Log("Last winner boat had: " + lastBoatWinner.GetPoints() + " points!" + " Last winner pirate had: " + lastPirateWinner.GetPoints() + " points!");
-        
+
+        if (logGenerations) _pirateLog.LogPirateGeneration(generationCount, lastPirateWinnerData);
         GenerateObjects(_boatParents, _pirateParents);
     }
 
