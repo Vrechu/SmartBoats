@@ -45,7 +45,7 @@ public class CanonballLogic : MonoBehaviour
         {
             if (other.gameObject.tag.Equals("Enemy"))
             {
-                _parentLogic.AddPoints();
+                _parentLogic.OnProjectileHit();
 
                 Destroy(other.gameObject);
             }

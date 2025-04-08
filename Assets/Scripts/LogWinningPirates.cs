@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEditor;
+using System.ComponentModel;
 
 public class LogWinningPirates : MonoBehaviour
 {
@@ -47,7 +48,6 @@ public class LogWinningPirates : MonoBehaviour
         Debug.Log("day: " + System.DateTime.Now.Day);
         Debug.Log("hours: " + System.DateTime.Now.TimeOfDay.Hours);
         Debug.Log("minutes: " + System.DateTime.Now.TimeOfDay.Minutes);
-        //Debug.Log("month: " + System.DateTime.Now.Month);
     }
 
     private void CreateLogFile()
@@ -69,16 +69,18 @@ public class LogWinningPirates : MonoBehaviour
                 + "---------------------------------------------------- \n\n"
 
                 + "Steps: " + data.steps + "\n"
-                + "Ray radius: " + data.steps + "\n"
-                + "Sight: " + data.steps + "\n"
-                + "Moving speed: " + data.steps + "\n"
-                + "Random direction: " + data.steps + "\n"
-                + "Enemy weight: " + data.steps + "\n"
-                + "Enemy distance factor: " + data.steps + "\n"
-                + "Bullet weight: " + data.steps + "\n"
-                + "bullet distance factor: " + data.steps + "\n"
-                + "Projectile Speed: " + data.steps + "\n"
-                + "FireRatePerMinute: " + data.steps + "\n\n"
+                + "Ray radius: " + data.rayRadius + "\n"
+                + "Sight: " + data.sight + "\n"
+                + "Moving speed: " + data.movingSpeed + "\n"
+                + "Random direction: " + data.randomDirectionValue + "\n"
+                + "Enemy weight: " + data.enemyWeight + "\n"
+                + "Enemy distance factor: " + data.enemyDistanceFactor + "\n"
+                + "Bullet weight: " + data.bulletWeight + "\n"
+                + "Bullet distance factor: " + data.bulletDistanceFactor + "\n"
+                + "Box weight: " + data.boxWeight + "\n"
+                + "Box distance factor: " + data.boxDistanceFactor + "\n"
+                + "Projectile Speed: " + data.projectileSpeed + "\n"
+                + "Fire Rate Per Minute: " + data.fireRatePerMinute + "\n\n"
                 + "==================================================== \n\n\n"
                 );
 
