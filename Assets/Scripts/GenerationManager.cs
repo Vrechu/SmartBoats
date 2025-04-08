@@ -216,9 +216,11 @@ public class GenerationManager : MonoBehaviour
         lastPirateWinner.name += "Gen-" + generationCount; 
         lastPirateWinnerData = lastPirateWinner.GetData();
         PrefabUtility.SaveAsPrefabAsset(lastPirateWinner.gameObject, savePrefabsAt + lastPirateWinner.name + ".prefab");
-        
+
         //Winners:
-        Debug.Log("Last winner boat had: " + lastBoatWinner.GetPoints() + " points!" + " Last winner pirate had: " + lastPirateWinner.GetPoints() + " points!");
+        Debug.Log(" Last winner pirate had " + lastPirateWinner.points + " points."
+            + "\n - Points from boxes: " + lastPirateWinner.pointsFromBoxes
+            + "\n - Points from kills: " + lastPirateWinner.pointsFromKills);
 
         if (logGenerations) _pirateLog.LogPirateGeneration(generationCount, lastPirateWinnerData);
         GenerateObjects(_boatParents, _pirateParents);

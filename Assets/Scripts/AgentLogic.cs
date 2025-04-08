@@ -45,6 +45,10 @@ struct AgentDirection : IComparable
 [Serializable]
 public struct AgentData
 {
+    public int totalPoints;
+    public int pointsFromBoxes;
+    public int pointsFromKills;
+
     public int steps;
     public int rayRadius;
     public float sight;
@@ -61,13 +65,19 @@ public struct AgentData
     public float projectileSpeed;
     public float fireRatePerMinute;
 
-    public AgentData(int steps, int rayRadius, float sight, float movingSpeed,
+    public AgentData(
+        int points, int pointsFromBoxes, int pointsFromKills,
+        int steps, int rayRadius, float sight, float movingSpeed,
         Vector2 randomDirectionValue, 
         float enemyWeight, float enemyDistanceFactor,
         float bulletWeight, float bulletDistanceFactor,
         float boxWeight, float boxDistanceFactor,
         float projectileSpeed, float fireRatePerMinute)
     {
+        this.totalPoints = points;
+        this.pointsFromBoxes = pointsFromBoxes;
+        this.pointsFromKills = pointsFromKills;
+
         this.steps = steps;
         this.rayRadius = rayRadius;
         this.sight = sight;
@@ -100,7 +110,12 @@ public class AgentLogic : MonoBehaviour, IComparable
     private GameObject _bullet;
 
     [SerializeField]
-    protected float points;
+    public int points { get; protected set; }
+
+    [SerializeField]
+    public int pointsFromBoxes { get; protected set; }
+    [SerializeField]
+    public int pointsFromKills { get; protected set; }
 
     private bool _isAwake;
 
@@ -179,10 +194,10 @@ public class AgentLogic : MonoBehaviour, IComparable
     private static float _ProjectileSpeedInfluenceInFireRate = 0.01f;
 
     //points
-    private static float _boxPoints = 1f;
+    private static int _boxPoints = 1;
     //private static float _boatPoints = 5.0f;
-    private static float _killPoints = 3;
-    private static float _bulletPoints = -100;
+    private static int _killPoints = 3;
+    private static int _bulletPoints = -100;
 
     #endregion
 
@@ -197,6 +212,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     private void Initiate()
     {
         points = 0;
+        pointsFromBoxes = 0;
+        pointsFromKills = 0;
         steps = 360 / rayRadius;
         _rigidbody = GetComponent<Rigidbody>();
     }
@@ -222,7 +239,6 @@ public class AgentLogic : MonoBehaviour, IComparable
         //shooting
         projectileSpeed = parent.projectileSpeed;
         fireRatePerMinute = parent.fireRatePerMinute;
-
     }
 
     /// <summary>
@@ -487,15 +503,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// </summary>
     public void OnProjectileHit()
     {
-        AddPoints(_killPoints);
-    }
-
-    /// <summary>
-    /// adds a static amount of points
-    /// </summary>
-    private void AddPoints(float vPoints)
-    {
-        points += vPoints;
+        points += _killPoints;
+        pointsFromKills += _killPoints;
     }
 
     /// <summary>
@@ -532,11 +541,6 @@ public class AgentLogic : MonoBehaviour, IComparable
         _rigidbody.velocity = Vector3.zero;
     }
 
-    public float GetPoints()
-    {
-        return points;
-    }
-
     /// <summary>
     /// Compares the points of two agents. When used on Sort function will make the highest points to be on top.
     /// </summary>
@@ -550,7 +554,7 @@ public class AgentLogic : MonoBehaviour, IComparable
         AgentLogic otherAgent = obj as AgentLogic;
         if (otherAgent != null)
         {
-            return otherAgent.GetPoints().CompareTo(GetPoints());
+            return otherAgent.points.CompareTo(points);
         }
         else
         {
@@ -564,7 +568,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(steps, rayRadius, sight, movingSpeed,
+        return new AgentData(points, pointsFromBoxes,pointsFromKills,
+            steps, rayRadius, sight, movingSpeed,
             randomDirectionValue,
             enemyWeight, enemyDistanceFactor,
             bulletWeight, bulletDistanceFactor,
@@ -572,7 +577,7 @@ public class AgentLogic : MonoBehaviour, IComparable
             projectileSpeed, fireRatePerMinute);
     }
 
-    // dostroys all projectiles created by this ship when destroyed
+    // dostroys all projectiles created by this ship when destroyed.
     private void OnDestroy()
     {
         for (int i = 0; i < _bullets.Count; i++)
@@ -581,17 +586,18 @@ public class AgentLogic : MonoBehaviour, IComparable
         }
     }
 
-    //removes points when hit by bullet
+    //removes points when hit by bullet and adds points when hitting a box.
     private void OnTriggerEnter(Collider other)
     {
         switch (other.gameObject.tag)
         {
             case "Bullet":
                 if (!_bullets.Contains(other.gameObject))
-                    AddPoints(_bulletPoints);
+                    points += _bulletPoints;
                 break;
             case "Box":
-                AddPoints(_boxPoints);
+                points += _boxPoints;
+                pointsFromBoxes += _boxPoints;
                 Destroy(other.gameObject);
                 break;
         }

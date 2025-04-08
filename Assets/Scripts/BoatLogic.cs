@@ -5,8 +5,8 @@ using Random = UnityEngine.Random;
 public class BoatLogic : AgentLogic
 {
     #region Static Variables
-    private static float _boxPoints = 2.0f;
-    private static float _piratePoints = -100.0f;
+    private static int _boxPoints = 2;
+    private static int _piratePoints = -100;
     #endregion
     
     private void OnTriggerEnter(Collider other)
