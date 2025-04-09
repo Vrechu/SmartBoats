@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 using System.ComponentModel;
+using UnityEngine.Analytics;
 
 public class LogWinningPirates : MonoBehaviour
 {
@@ -28,15 +29,16 @@ public class LogWinningPirates : MonoBehaviour
     /// </summary>
     /// <param name="generation">generation number</param>
     /// <param name="genData">pirate data</param>
-    public void LogPirateGeneration(int generation, AgentData genData, SimData simData)
-    {
-        if (generation < 1)
-        {
-            if (!_logOnlyLatest) CreateNewFileName();
-            CreateLogFile(simData);
-        }  
+    public void LogPirateGeneration(int generation, AgentData genData)
+    {        
         LogPirate(generation, genData);        
-    } 
+    }
+
+    public void CreateLog(SimData simData, AgentData startGenData)
+    {
+        if (!_logOnlyLatest) CreateNewFileName();
+        CreateLogFile(simData, startGenData);
+    }
 
     /// <summary>
     /// Generates a fileName based on the current date and time.
@@ -55,22 +57,39 @@ public class LogWinningPirates : MonoBehaviour
     /// <summary>
     /// Creates a .txt file with at the indicated path.
     /// </summary>
-    private void CreateLogFile(SimData simData)
+    private void CreateLogFile(SimData simData, AgentData startingGenData)
     {
         File.WriteAllText(_path,
 
-
             "///////////////////////////////////////////////////////////////////////////////////// \n\n"
+
             + "  - SIMULATION RUN -\n  "
-            + System.DateTime.Now + "\n\n" 
+            + System.DateTime.Now + "\n\n"
+
             + "///////////////////////////////////////////////////////////////////////////////////// \n\n"
-            + "  Simulation settings: \n\n"
-            + "   - Pirate amount: " + simData.PirateCount + "\n"
-            + "   - Box amount: " + simData.BoxCount + "\n"
-            + "   - Mutation factor: " + simData.MutationFactor + "\n"
-            + "   - mutation chance: " + simData.MutationChance + "\n"
-            + "   - Pirate parent size: " + simData.PirateParentSize + "\n"
-            + "   - Simulation time: " + simData.SimulationTime + "\n\n"
+
+            + "  Simulation settings: \n"
+            + "   - Pirate amount:          " + simData.PirateCount + "\n"
+            + "   - Box amount:             " + simData.BoxCount + "\n"
+            + "   - Mutation factor:        " + simData.MutationFactor + "\n"
+            + "   - mutation chance:        " + simData.MutationChance + "\n"
+            + "   - Pirate parent size:     " + simData.PirateParentSize + "\n"
+            + "   - Simulation time:        " + simData.SimulationTime + "\n\n"
+
+            + "  Starting Pirate stats: \n"
+            + "   - Steps:                  " + startingGenData.steps + "\n"
+            + "   - Ray radius:             " + startingGenData.rayRadius + "\n"
+            + "   - Sight:                  " + startingGenData.sight + "\n"
+            + "   - Moving speed:           " + startingGenData.movingSpeed + "\n"
+            + "   - Random direction:       " + startingGenData.randomDirectionValue + "\n"
+            + "   - Enemy weight:           " + startingGenData.enemyWeight + "\n"
+            + "   - Enemy distance factor:  " + startingGenData.enemyDistanceFactor + "\n"
+            + "   - Bullet weight:          " + startingGenData.bulletWeight + "\n"
+            + "   - Bullet distance factor: " + startingGenData.bulletDistanceFactor + "\n"
+            + "   - Box weight:             " + startingGenData.boxWeight + "\n"
+            + "   - Box distance factor:    " + startingGenData.boxDistanceFactor + "\n"
+            + "   - Projectile Speed:       " + startingGenData.projectileSpeed + "\n"
+            + "   - Fire Rate Per Minute:   " + startingGenData.fireRatePerMinute + "\n"
 
             + "///////////////////////////////////////////////////////////////////////////////////// \n\n\n\n");
     }
@@ -85,28 +104,28 @@ public class LogWinningPirates : MonoBehaviour
         if (File.Exists(_path))
         {
             File.AppendAllText(_path,
-                  "==================================================== \n"
-                + "  Generation: " + generation + "\n\n"
+                  "====================================================// \n"
+                + "  Generation " + generation + " winner: \n\n"
                 
 
                 + "  Total points: " + data.totalPoints + "\n"
-                + "   - Points from boxes: " + data.pointsFromBoxes + "\n"
-                + "   - Points from kills: " + data.pointsFromKills + "\n"
-                + "----------------------------------------- \n\n"
+                + "   - Points from boxes:      " + data.pointsFromBoxes + "\n"
+                + "   - Points from kills:      " + data.pointsFromKills + "\n\n"
 
-                + "   - Steps: " + data.steps + "\n"
-                + "   - Ray radius: " + data.rayRadius + "\n"
-                + "   - Sight: " + data.sight + "\n"
-                + "   - Moving speed: " + data.movingSpeed + "\n"
-                + "   - Random direction: " + data.randomDirectionValue + "\n"
-                + "   - Enemy weight: " + data.enemyWeight + "\n"
-                + "   - Enemy distance factor: " + data.enemyDistanceFactor + "\n"
-                + "   - Bullet weight: " + data.bulletWeight + "\n"
+                + "  Stats: \n"
+                + "   - Steps:                  " + data.steps + "\n"
+                + "   - Ray radius:             " + data.rayRadius + "\n"
+                + "   - Sight:                  " + data.sight + "\n"
+                + "   - Moving speed:           " + data.movingSpeed + "\n"
+                + "   - Random direction:       " + data.randomDirectionValue + "\n"
+                + "   - Enemy weight:           " + data.enemyWeight + "\n"
+                + "   - Enemy distance factor:  " + data.enemyDistanceFactor + "\n"
+                + "   - Bullet weight:          " + data.bulletWeight + "\n"
                 + "   - Bullet distance factor: " + data.bulletDistanceFactor + "\n"
-                + "   - Box weight: " + data.boxWeight + "\n"
-                + "   - Box distance factor: " + data.boxDistanceFactor + "\n"
-                + "   - Projectile Speed: " + data.projectileSpeed + "\n"
-                + "   - Fire Rate Per Minute: " + data.fireRatePerMinute + "\n"
+                + "   - Box weight:             " + data.boxWeight + "\n"
+                + "   - Box distance factor:    " + data.boxDistanceFactor + "\n"
+                + "   - Projectile Speed:       " + data.projectileSpeed + "\n"
+                + "   - Fire Rate Per Minute:   " + data.fireRatePerMinute + "\n"
                 + "==================================================== \n\n\n\n"
                 );
 

@@ -11,7 +11,7 @@ public class GenerateObjectsInArea : MonoBehaviour
     private Bounds _bounds;
 
     [Header("Objects")]
-    [SerializeField, Tooltip("Possible objecst to be created in the area.")]
+    [SerializeField, Tooltip("Possible objects to be created in the area.")]
     private GameObject[] gameObjectToBeCreated;
     [SerializeField, Tooltip("Number of objects to be created.")]
     private uint Count;
@@ -91,5 +91,10 @@ public class GenerateObjectsInArea : MonoBehaviour
     public uint GetCount()
     {
         return Count;
+    }
+
+    public GameObject GetStartingObject()
+    {
+        return gameObjectToBeCreated[0];
     }
 }

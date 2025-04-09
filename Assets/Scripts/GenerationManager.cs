@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -85,6 +86,7 @@ public class GenerationManager : MonoBehaviour
 
     private LogWinningPirates _pirateLog;
     private SimData _simData;
+    AgentData _startingPirateData;
 
     private void Awake()
     {
@@ -93,12 +95,12 @@ public class GenerationManager : MonoBehaviour
 
     private void Start()
     {
+            _pirateLog = LogWinningPirates.LogSingleton;
         if (runOnStart)
         {
             StartSimulation();
         }
 
-        _pirateLog = LogWinningPirates.LogSingleton;
     }
     
     private void Update()
@@ -137,7 +139,7 @@ public class GenerationManager : MonoBehaviour
      /// <param name="pirateParents"></param>
     public void GenerateObjects(BoatLogic[] boatParents = null, PirateLogic[] pirateParents = null)
     {
-        GenerateBoats(boatParents);
+        //GenerateBoats(boatParents);
         GeneratePirates(pirateParents);
     }
 
@@ -210,7 +212,7 @@ public class GenerationManager : MonoBehaviour
 
         GenerateBoxes();
         
-        //Fetch parents
+        /*//Fetch parents
         _activeBoats.RemoveAll(item => item == null);
         _activeBoats.Sort();
         if (_activeBoats.Count == 0)
@@ -226,8 +228,8 @@ public class GenerationManager : MonoBehaviour
         BoatLogic lastBoatWinner = _activeBoats[0];
         lastBoatWinner.name += "Gen-" + generationCount; 
         lastBoatWinnerData = lastBoatWinner.GetData();
-        PrefabUtility.SaveAsPrefabAsset(lastBoatWinner.gameObject, savePrefabsAt + lastBoatWinner.name + ".prefab");
-        
+        if (saveInPrefab) PrefabUtility.SaveAsPrefabAsset(lastBoatWinner.gameObject, savePrefabsAt + lastBoatWinner.name + ".prefab");
+        */
         _activePirates.RemoveAll(item => item == null);
         _activePirates.Sort();
         _pirateParents = new PirateLogic[pirateParentSize];
@@ -246,23 +248,26 @@ public class GenerationManager : MonoBehaviour
             + "\n - Points from boxes: " + lastPirateWinner.pointsFromBoxes
             + "\n - Points from kills: " + lastPirateWinner.pointsFromKills);
 
-        if (logGenerations) _pirateLog.LogPirateGeneration(generationCount, lastPirateWinnerData, _simData);
+        if (logGenerations) _pirateLog.LogPirateGeneration(generationCount, lastPirateWinnerData);
         GenerateObjects(_boatParents, _pirateParents);
     }
 
-     /// <summary>
-     /// Starts a new simulation. It does not call MakeNewGeneration. It calls both GenerateBoxes and GenerateObjects and
-     /// then sets the _runningSimulation flag to true.
-     /// </summary>
+    /// <summary>
+    /// Starts a new simulation. It does not call MakeNewGeneration. It calls both GenerateBoxes and GenerateObjects and
+    /// then sets the _runningSimulation flag to true.
+    /// </summary>
     public void StartSimulation()
     {
-        Random.InitState(6);
+        _simData = new SimData(pirateGenerator.GetCount(), boxGenerators[0].GetCount(), mutationFactor, 
+            mutationChance, pirateParentSize, simulationTimer);
+        _startingPirateData = pirateGenerator.GetStartingObject().GetComponent<PirateLogic>().GetData();
 
+        if (logGenerations) _pirateLog.CreateLog(_simData, _startingPirateData);
+
+        Random.InitState(6);
         GenerateBoxes();
         GenerateObjects();
         _runningSimulation = true;
-
-        _simData = new SimData(pirateGenerator.GetCount(), boxGenerators[0].GetCount(), mutationFactor, mutationChance, pirateParentSize, simulationTimer);
     }
 
      /// <summary>
