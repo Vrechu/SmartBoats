@@ -5,6 +5,27 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+
+public struct SimData
+{
+    public uint PirateCount;
+    public uint BoxCount;
+    public float MutationFactor;
+    public float MutationChance;
+    public int PirateParentSize;
+    public float SimulationTime;
+
+    public SimData(uint pirateCount, uint boxCount, float mutationFactor, float mutationChance, int pirateParentSize, float simulationTime)
+    {
+        PirateCount = pirateCount;
+        BoxCount = boxCount;
+        MutationFactor = mutationFactor;
+        MutationChance = mutationChance;
+        PirateParentSize = pirateParentSize;
+        SimulationTime = simulationTime;
+    }
+}
+
 public class GenerationManager : MonoBehaviour
 {
     [Header("Generators")]
@@ -39,6 +60,8 @@ public class GenerationManager : MonoBehaviour
 
     [SerializeField, Tooltip("Logs generations in .txt file.")]
     private bool logGenerations;
+    [SerializeField, Tooltip("SavesGenerations as prefab")]
+    private bool saveInPrefab;
 
     [Space(10)] 
     [Header("Prefab Saving")]
@@ -61,6 +84,7 @@ public class GenerationManager : MonoBehaviour
     private PirateLogic[] _pirateParents;
 
     private LogWinningPirates _pirateLog;
+    private SimData _simData;
 
     private void Awake()
     {
@@ -215,14 +239,14 @@ public class GenerationManager : MonoBehaviour
         PirateLogic lastPirateWinner = _activePirates[0];
         lastPirateWinner.name += "Gen-" + generationCount; 
         lastPirateWinnerData = lastPirateWinner.GetData();
-        PrefabUtility.SaveAsPrefabAsset(lastPirateWinner.gameObject, savePrefabsAt + lastPirateWinner.name + ".prefab");
+        if (saveInPrefab) PrefabUtility.SaveAsPrefabAsset(lastPirateWinner.gameObject, savePrefabsAt + lastPirateWinner.name + ".prefab");
 
         //Winners:
         Debug.Log(" Last winner pirate had " + lastPirateWinner.points + " points."
             + "\n - Points from boxes: " + lastPirateWinner.pointsFromBoxes
             + "\n - Points from kills: " + lastPirateWinner.pointsFromKills);
 
-        if (logGenerations) _pirateLog.LogPirateGeneration(generationCount, lastPirateWinnerData);
+        if (logGenerations) _pirateLog.LogPirateGeneration(generationCount, lastPirateWinnerData, _simData);
         GenerateObjects(_boatParents, _pirateParents);
     }
 
@@ -237,6 +261,8 @@ public class GenerationManager : MonoBehaviour
         GenerateBoxes();
         GenerateObjects();
         _runningSimulation = true;
+
+        _simData = new SimData(pirateGenerator.GetCount(), boxGenerators[0].GetCount(), mutationFactor, mutationChance, pirateParentSize, simulationTimer);
     }
 
      /// <summary>

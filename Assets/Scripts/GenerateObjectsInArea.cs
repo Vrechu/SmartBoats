@@ -14,7 +14,7 @@ public class GenerateObjectsInArea : MonoBehaviour
     [SerializeField, Tooltip("Possible objecst to be created in the area.")]
     private GameObject[] gameObjectToBeCreated;
     [SerializeField, Tooltip("Number of objects to be created.")]
-    private uint count;
+    private uint Count;
 
     [Space(10)]
     [Header("Variation")]
@@ -52,7 +52,7 @@ public class GenerateObjectsInArea : MonoBehaviour
         }
         
         List<GameObject> newObjects = new List<GameObject>();
-        for (uint i = 0; i < count; i++)
+        for (uint i = 0; i < Count; i++)
         {
             GameObject created = Instantiate(gameObjectToBeCreated[Random.Range(0, gameObjectToBeCreated.Length)], GetRandomPositionInWorldBounds(), GetRandomRotation());
             created.transform.parent = transform;
@@ -86,5 +86,10 @@ public class GenerateObjectsInArea : MonoBehaviour
         return Quaternion.Euler(Random.Range(randomRotationMinimal.x, randomRotationMaximal.x),
             Random.Range(randomRotationMinimal.y, randomRotationMaximal.y),
             Random.Range(randomRotationMinimal.z, randomRotationMaximal.z));
+    }
+
+    public uint GetCount()
+    {
+        return Count;
     }
 }

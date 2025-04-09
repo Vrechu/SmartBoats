@@ -23,16 +23,24 @@ public class LogWinningPirates : MonoBehaviour
        _path = Application.dataPath + "/PirateLogs/" + _fileName + ".txt";
     }
 
-    public void LogPirateGeneration(int generation, AgentData data)
+    /// <summary>
+    /// Creates a .txt file when called on the first generation and appends it with pirate generation data when called on subsewuent generations.
+    /// </summary>
+    /// <param name="generation">generation number</param>
+    /// <param name="genData">pirate data</param>
+    public void LogPirateGeneration(int generation, AgentData genData, SimData simData)
     {
         if (generation < 1)
         {
             if (!_logOnlyLatest) CreateNewFileName();
-            CreateLogFile();
+            CreateLogFile(simData);
         }  
-        LogPirate(generation, data);        
+        LogPirate(generation, genData);        
     } 
 
+    /// <summary>
+    /// Generates a fileName based on the current date and time.
+    /// </summary>
     private void CreateNewFileName()
     {
         _path = Application.dataPath + "/PirateLogs/SimRun_"
@@ -44,42 +52,61 @@ public class LogWinningPirates : MonoBehaviour
             + ".txt";
     }
 
-    private void CreateLogFile()
+    /// <summary>
+    /// Creates a .txt file with at the indicated path.
+    /// </summary>
+    private void CreateLogFile(SimData simData)
     {
         File.WriteAllText(_path,
-            "\n Simulation run \n " 
-            + System.DateTime.Now + "\n \n"
-            + "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| \n \n");
 
+
+            "///////////////////////////////////////////////////////////////////////////////////// \n\n"
+            + "  - SIMULATION RUN -\n  "
+            + System.DateTime.Now + "\n\n" 
+            + "///////////////////////////////////////////////////////////////////////////////////// \n\n"
+            + "  Simulation settings: \n\n"
+            + "   - Pirate amount: " + simData.PirateCount + "\n"
+            + "   - Box amount: " + simData.BoxCount + "\n"
+            + "   - Mutation factor: " + simData.MutationFactor + "\n"
+            + "   - mutation chance: " + simData.MutationChance + "\n"
+            + "   - Pirate parent size: " + simData.PirateParentSize + "\n"
+            + "   - Simulation time: " + simData.SimulationTime + "\n\n"
+
+            + "///////////////////////////////////////////////////////////////////////////////////// \n\n\n\n");
     }
 
+    /// <summary>
+    /// Logs appends the data of the latest pirate to the file.
+    /// </summary>
+    /// <param name="generation">the pirate generation number</param>
+    /// <param name="data">the agant data of the pirate to be logged</param>
     private void LogPirate(int generation, AgentData data)
     {
         if (File.Exists(_path))
         {
             File.AppendAllText(_path,
                   "==================================================== \n"
-                + "Generation: " + generation + "\n\n"
+                + "  Generation: " + generation + "\n\n"
                 
 
-                + "Total points: " + data.totalPoints + "\n"
-                + " - Points from boxes: " + data.pointsFromBoxes + "\n"
-                + " - Points from kills: " + data.pointsFromKills + "\n"
+                + "  Total points: " + data.totalPoints + "\n"
+                + "   - Points from boxes: " + data.pointsFromBoxes + "\n"
+                + "   - Points from kills: " + data.pointsFromKills + "\n"
                 + "----------------------------------------- \n\n"
 
-                + " - Steps: " + data.steps + "\n"
-                + " - Ray radius: " + data.rayRadius + "\n"
-                + " - Sight: " + data.sight + "\n"
-                + " - Moving speed: " + data.movingSpeed + "\n"
-                + " - Random direction: " + data.randomDirectionValue + "\n"
-                + " - Enemy weight: " + data.enemyWeight + "\n"
-                + " - Enemy distance factor: " + data.enemyDistanceFactor + "\n"
-                + " - Bullet weight: " + data.bulletWeight + "\n"
-                + " - Bullet distance factor: " + data.bulletDistanceFactor + "\n"
-                + " - Box weight: " + data.boxWeight + "\n"
-                + " - Box distance factor: " + data.boxDistanceFactor + "\n"
-                + " - Projectile Speed: " + data.projectileSpeed + "\n"
-                + " - Fire Rate Per Minute: " + data.fireRatePerMinute + "\n"
+                + "   - Steps: " + data.steps + "\n"
+                + "   - Ray radius: " + data.rayRadius + "\n"
+                + "   - Sight: " + data.sight + "\n"
+                + "   - Moving speed: " + data.movingSpeed + "\n"
+                + "   - Random direction: " + data.randomDirectionValue + "\n"
+                + "   - Enemy weight: " + data.enemyWeight + "\n"
+                + "   - Enemy distance factor: " + data.enemyDistanceFactor + "\n"
+                + "   - Bullet weight: " + data.bulletWeight + "\n"
+                + "   - Bullet distance factor: " + data.bulletDistanceFactor + "\n"
+                + "   - Box weight: " + data.boxWeight + "\n"
+                + "   - Box distance factor: " + data.boxDistanceFactor + "\n"
+                + "   - Projectile Speed: " + data.projectileSpeed + "\n"
+                + "   - Fire Rate Per Minute: " + data.fireRatePerMinute + "\n"
                 + "==================================================== \n\n\n\n"
                 );
 
