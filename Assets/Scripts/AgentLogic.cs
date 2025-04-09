@@ -194,10 +194,10 @@ public class AgentLogic : MonoBehaviour, IComparable
     private static float _ProjectileSpeedInfluenceInFireRate = 0.01f;
 
     //points
-    private static int _boxPoints = 1;
+    public static int boxPoints { get; private set; } = 1;
     //private static float _boatPoints = 5.0f;
-    private static int _killPoints = 3;
-    private static int _bulletPoints = -100;
+    public static int killPoints { get; private set; } = 3;
+    public static int bulletPoints { get; private set; } = -100;
 
     #endregion
 
@@ -503,8 +503,8 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// </summary>
     public void OnProjectileHit()
     {
-        points += _killPoints;
-        pointsFromKills += _killPoints;
+        points += killPoints;
+        pointsFromKills += killPoints;
     }
 
     /// <summary>
@@ -568,7 +568,7 @@ public class AgentLogic : MonoBehaviour, IComparable
     /// <returns></returns>
     public AgentData GetData()
     {
-        return new AgentData(points, pointsFromBoxes,pointsFromKills,
+        return new AgentData(points, pointsFromBoxes, pointsFromKills,
             steps, rayRadius, sight, movingSpeed,
             randomDirectionValue,
             enemyWeight, enemyDistanceFactor,
@@ -593,11 +593,11 @@ public class AgentLogic : MonoBehaviour, IComparable
         {
             case "Bullet":
                 if (!_bullets.Contains(other.gameObject))
-                    points += _bulletPoints;
+                    points += bulletPoints;
                 break;
             case "Box":
-                points += _boxPoints;
-                pointsFromBoxes += _boxPoints;
+                points += boxPoints;
+                pointsFromBoxes += boxPoints;
                 Destroy(other.gameObject);
                 break;
         }
