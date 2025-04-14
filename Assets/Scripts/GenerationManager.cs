@@ -58,6 +58,8 @@ public class GenerationManager : MonoBehaviour
     private bool runOnStart;
     [SerializeField, Tooltip("Initial count for the simulation. Used for the Prefabs naming.")]
     private int generationCount;
+    [SerializeField, Tooltip("Stops after this generation number")]
+    private int stopAfterGeneration;
 
     [SerializeField, Tooltip("Logs generations in .txt file.")]
     private bool logGenerations;
@@ -113,6 +115,7 @@ public class GenerationManager : MonoBehaviour
                 ++generationCount;
                 MakeNewGeneration();
                 simulationCount = -Time.deltaTime;
+                CheckSimulationCount();
             } 
             simulationCount += Time.deltaTime;
         }
@@ -287,8 +290,17 @@ public class GenerationManager : MonoBehaviour
     public void StopSimulation()
     {
         _runningSimulation = false;
-        _activeBoats.RemoveAll(item => item == null);
-        _activeBoats.ForEach(boat => boat.Sleep());
+        //_activeBoats.RemoveAll(item => item == null);
+        //_activeBoats.ForEach(boat => boat.Sleep());
         _activePirates.ForEach(pirate => pirate.Sleep());
+    }
+
+    public void CheckSimulationCount()
+    {
+        if (_runningSimulation && generationCount > stopAfterGeneration)
+        {
+            StopSimulation();
+            Debug.Log("Simulation ended");
+        }
     }
 }
