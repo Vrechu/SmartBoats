@@ -117,8 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bullet: {fileID: 1063589168454968477, guid: 3f789965f2f455648a537ec30318ac08, type: 3}
-  points: 0
-  steps: 0
+  steps: 10
   rayRadius: 16
   sight: 30
   movingSpeed: 4
@@ -127,11 +126,15 @@ MonoBehaviour:
   enemyDistanceFactor: 0
   bulletWeight: 0
   bulletDistanceFactor: 0
-  projectileSpeed: 3
-  fireRatePerMinute: 8
+  boxWeight: 0
+  boxDistanceFactor: 0
+  projectileSpeed: 10
+  fireRatePerMinute: 15
+  _shootTimer: 0
   visionColor: {r: 0.053266272, g: 0.5943396, b: 0.08738161, a: 1}
   bulletFoundColor: {r: 1, g: 0, b: 0, a: 0}
   enemyFoundColor: {r: 1, g: 0, b: 0.8268671, a: 0}
+  boxFoundColor: {r: 0.7584905, g: 0.30348682, b: 0.03291554, a: 0}
   directionColor: {r: 1, g: 0.94269866, b: 0, a: 1}
   debug: 1
 --- !u!1 &7619517824896039317
