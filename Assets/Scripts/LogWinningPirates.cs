@@ -5,12 +5,14 @@ using System.IO;
 using UnityEditor;
 using System.ComponentModel;
 using UnityEngine.Analytics;
+using System.Data;
 
 public class LogWinningPirates : MonoBehaviour
 {
     public static LogWinningPirates LogSingleton { get; private set; }
 
-    private string _path;
+    private string _logPath;
+    private string _infoPath;
     [SerializeField]
     private string _fileName = "LatestSimRun";
     [SerializeField]
@@ -21,7 +23,8 @@ public class LogWinningPirates : MonoBehaviour
         if (LogSingleton != null) Destroy(this);
         else LogSingleton = this;
 
-       _path = Application.dataPath + "/PirateLogs/" + _fileName + ".txt";
+       _logPath = Application.dataPath + "/PirateLogs/" + _fileName + ".txt";
+        _infoPath = Application.dataPath + "/PirateLogs/" + _fileName + "info.txt";
     }
 
     /// <summary>
@@ -31,36 +34,40 @@ public class LogWinningPirates : MonoBehaviour
     /// <param name="genData">pirate data</param>
     public void LogPirateGeneration(int generation, AgentData genData)
     {        
-        LogPirate(generation, genData);        
+        LogPirate(generation, genData);
     }
 
     public void CreateLog(SimData simData, AgentData startGenData)
     {
-        if (!_logOnlyLatest) CreateNewFileName();
-        CreateLogFile(simData, startGenData);
+        if (!_logOnlyLatest) CreateNewFileNames();
+        CreateLogFiles(simData, startGenData);
     }
 
-    /// <summary>
-    /// Generates a fileName based on the current date and time.
-    /// </summary>
-    private void CreateNewFileName()
+    private void CreateNewFileNames()
     {
-        _path = Application.dataPath + "/PirateLogs/" 
-            + _fileName + "_"
-            + System.DateTime.Now.Month + "-"
-            + System.DateTime.Now.Day + "_"
-            + System.DateTime.Now.TimeOfDay.Hours + "H"
-            + System.DateTime.Now.TimeOfDay.Minutes + "M"
-            + System.DateTime.Now.Second + "S"
-            + ".txt";
+        string dateIndication =
+             System.DateTime.Now.Day + "-"
+            + System.DateTime.Now.Month;
+
+        _infoPath = FileName( "Info", dateIndication, 0);
+        _logPath = FileName( "Log", dateIndication, 0);
+    }
+
+
+    private string FileName(string logType, string dateIndication, int number = 0)
+    {
+        string file = Application.dataPath + "/PirateLogs/" + logType + "_" + dateIndication + "_nr" +  number + ".txt";
+        
+        if (!File.Exists(file)) return file;
+        return FileName(logType, dateIndication, number+1);
     }
 
     /// <summary>
     /// Creates a .txt file with at the indicated path.
     /// </summary>
-    private void CreateLogFile(SimData simData, AgentData startingGenData)
+    private void CreateLogFiles(SimData simData, AgentData startingGenData)
     {
-        File.WriteAllText(_path,
+        File.WriteAllText(_infoPath,
 
             "///////////////////////////////////////////////////////////////////////////////////// \n"
 
@@ -94,7 +101,12 @@ public class LogWinningPirates : MonoBehaviour
             + "   - Projectile Speed        ; " + startingGenData.projectileSpeed + "\n"
             + "   - Fire Rate Per Minute    ; " + startingGenData.fireRatePerMinute + "\n"
 
-            + "///////////////////////////////////////////////////////////////////////////////////// \n\n\n\n");
+            + "/////////////////////////////////////////////////////////////////////////////////////");
+
+        File.WriteAllText(_logPath,
+         "Generation ; Total points ; Points from boxes ; Points from kills ; Steps "
+               + $"; Ray radius ; Sight ; moving speed ; Random direction ; Enemy weight ; Enemy distance factor ; Bullet weight "
+               + $"; Bullet distance factor ; Box weight ; Box distance factor ; projectile Speed ; Fire rate per minute \n");
     }
 
     /// <summary>
@@ -104,10 +116,10 @@ public class LogWinningPirates : MonoBehaviour
     /// <param name="data">the agant data of the pirate to be logged</param>
     private void LogPirate(int generation, AgentData data)
     {
-        if (File.Exists(_path))
+        if (File.Exists(_logPath))
         {
-            File.AppendAllText(_path,
-                   "  Generation winner; " + generation + "\n"
+            File.AppendAllText(_logPath,
+                   /*"  Generation winner; " + generation + "\n"
                 
 
                 + "  Total points               ; " + data.totalPoints + "\n"
@@ -125,8 +137,13 @@ public class LogWinningPirates : MonoBehaviour
                 + "   - Bullet distance factor  ; " + data.bulletDistanceFactor + "\n"
                 + "   - Box weight              ; " + data.boxWeight + "\n"
                 + "   - Box distance factor     ; " + data.boxDistanceFactor + "\n"
-                + "   - Projectile Speed        ; " + data.projectileSpeed + "\n"
-                + "   - Fire Rate Per Minute    ; " + data.fireRatePerMinute + "\n\n"
+                + "   - Projectile Sseed        ; " + data.projectileSpeed + "\n"
+                + "   - Fire rate per minute    ; " + data.fireRatePerMinute + "\n\n"*/
+                   
+                   $"{generation} ; {data.totalPoints} ; {data.pointsFromBoxes} ; {data.pointsFromKills} ; {data.steps}"
+                   + $" ; {data.rayRadius} ; {data.sight} ; {data.movingSpeed} ; {data.randomDirectionValue} ; {data.enemyWeight}" +
+                   $" ; {data.enemyDistanceFactor} ; {data.bulletWeight} ; {data.bulletDistanceFactor} ; {data.boxWeight} ; {data.boxDistanceFactor}" +
+                   $" ; {data.projectileSpeed} ; {data.fireRatePerMinute} \n"
                 );
 
             Debug.Log("Generation number " + generation + " logged.");
