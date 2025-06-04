@@ -1,0 +1,28 @@
+///////////////////////////////////////////////////////////////////////////////////// 
+  - SIMULATION RUN -
+  4/16/2025 12:01:32 PM
+///////////////////////////////////////////////////////////////////////////////////// 
+  Simulation settings 
+   - Simulation time         ; 15
+   - Pirate amount           ; 30
+   - Box amount              ; 100
+   - Mutation factor         ; 3.5
+   - Mutation chance         ; 35
+   - Pirate parent size      ; 2
+   - Box point worth         ; 1
+   - Kill point worth        ; 3
+  Starting Pirate stats 
+   - Steps                   ; 10
+   - Ray radius              ; 16
+   - Sight                   ; 30
+   - Moving speed            ; 4
+   - Random direction        ; (-1.00, 1.00)
+   - Enemy weight            ; 0
+   - Enemy distance factor   ; 0
+   - Bullet weight           ; 0
+   - Bullet distance factor  ; 0
+   - Box weight              ; 0
+   - Box distance factor     ; 0
+   - Projectile Speed        ; 10
+   - Fire Rate Per Minute    ; 15
+/////////////////////////////////////////////////////////////////////////////////////
